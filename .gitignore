@@ -1,32 +1,37 @@
-# Prerequisites
-*.d
+soil
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# ---------------------
+#	  Visual Studio
+# ---------------------
 
-# Precompiled Headers
-*.gch
-*.pch
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+*.dir
 
-# Fortran module files
-*.mod
-*.smod
+.vs
+*.sln
+*.vcxproj
+*.vcxproj.filters
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+Win32
+math4games.dir
 
-# Executables
-*.exe
-*.out
-*.app
+#CMake
+CMakeFiles
+CMakeCache.txt
+cmake_install.cmake
