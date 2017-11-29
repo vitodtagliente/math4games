@@ -39,6 +39,15 @@
     <ClInclude Include="math4games\math4games.h">
       <Filter>Header Files\math4games</Filter>
     </ClInclude>
+    <ClInclude Include="math4games\matrix2.h">
+      <Filter>Header Files\math4games</Filter>
+    </ClInclude>
+    <ClInclude Include="math4games\matrix3.h">
+      <Filter>Header Files\math4games</Filter>
+    </ClInclude>
+    <ClInclude Include="math4games\matrix4.h">
+      <Filter>Header Files\math4games</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
