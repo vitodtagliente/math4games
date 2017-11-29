@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\vito.tagliente\Desktop\math4games\CMakeFiles\c844848b021ec3378dae6b0f49f5d75e\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{489D9AC0-854E-3CBB-8703-6923EB13F0B0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
