@@ -1,0 +1,7 @@
+/home/menick/Scrivania/math4games/testlinux/test/build/CMakeFiles/install.dir
+/home/menick/Scrivania/math4games/testlinux/test/build/CMakeFiles/list_install_components.dir
+/home/menick/Scrivania/math4games/testlinux/test/build/CMakeFiles/rebuild_cache.dir
+/home/menick/Scrivania/math4games/testlinux/test/build/CMakeFiles/test.dir
+/home/menick/Scrivania/math4games/testlinux/test/build/CMakeFiles/install/strip.dir
+/home/menick/Scrivania/math4games/testlinux/test/build/CMakeFiles/install/local.dir
+/home/menick/Scrivania/math4games/testlinux/test/build/CMakeFiles/edit_cache.dir

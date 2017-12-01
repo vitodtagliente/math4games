@@ -1,3 +1,0 @@
-C:/Users/vito.tagliente/Desktop/math4games/CMakeFiles/math4games.dir
-C:/Users/vito.tagliente/Desktop/math4games/CMakeFiles/ALL_BUILD.dir
-C:/Users/vito.tagliente/Desktop/math4games/CMakeFiles/ZERO_CHECK.dir
