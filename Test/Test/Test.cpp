@@ -31,29 +31,7 @@ int main()
 {
 	/* Vectors tests */
 
-	vector4 zero;
-	vector4 v(1);
-	vector4 w(2);
-
-	log(zero);
-	log(v);
-	log(-v);
-	log(w);
-
-	log(v + w);
-	log(v - w);
-	log(v * 7);
-
-	log(v.normalize());
-	cout << v.magnitude() << endl;
-	cout << v.normalize().magnitude() << endl;
-
-	log(v == w);
-	log(v == v);
-	log(v != w);
-
-	cout << v.distance(w) << endl;
-	cout << vector4::distance(v, w) << endl;
+	
 
 	int pause = 0;
 	cin >> pause;

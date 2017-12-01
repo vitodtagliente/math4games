@@ -31,6 +31,13 @@ namespace math4games
 
 		~vector2() {}
 
+		vector2& set(float _x, float _y) {
+			x = _x;
+			y = _y;
+			return (*this);
+		}
+
+		/*
 		float magnitude() {
 			return sqrt(x*x + y*y);
 		}
@@ -50,6 +57,7 @@ namespace math4games
 		static float distance(vector2& v1, vector2& v2) {
 			return (v1 - v2).magnitude();
 		}
+		*/
 
 		/* Operators overloading */
 
@@ -69,22 +77,10 @@ namespace math4games
 			return *this;
 		}
 
-		vector2 operator+(const vector2& other) {
-			return vector2(*this) += other;
-		}
-
 		vector2& operator-=(const vector2& other) {
 			x -= other.x;
 			y -= other.y;
 			return *this;
-		}
-
-		vector2 operator-(const vector2& other) {
-			return vector2(*this) -= other;
-		}
-
-		vector2 operator-() {
-			return (*this) * -1;
 		}
 
 		vector2& operator*=(float s) {
@@ -93,19 +89,11 @@ namespace math4games
 			return *this;
 		}
 
-		vector2 operator*(float s) {
-			return vector2(*this) *= s;
-		}
-
 		vector2& operator/=(float s) {
 			s = 1.0f / s;
 			x *= s;
 			y *= s;
 			return *this;
-		}
-
-		vector2 operator/(float s) {
-			return vector2(*this) /= s;
 		}
 
 		bool operator==(const vector2& other) {
@@ -118,4 +106,33 @@ namespace math4games
 		}
 
 	};
+
+	inline vector2 operator-(const vector2& v) {
+		return vector2(-v.x, -v.y);
+	}
+
+	inline vector2 operator+(const vector2& v1, const vector2& v2) {
+		return vector2(v1.x + v2.x, v1.y + v2.y);
+	}
+
+	inline vector2 operator-(const vector2& v1, const vector2& v2) {
+		return vector2(v1.x - v2.x, v1.y - v2.y);
+	}
+
+	inline vector2 operator*(const vector2& v, float s) {
+		return vector2(v.x * s, v.y * s);
+	}
+
+	inline vector2 operator*(float s, const vector2& v) {
+		return vector2(v.x * s, v.y * s);
+	}
+
+	inline vector2 operator/(const vector2& v, float s) {
+		float f = 1.0f / s;
+		return vector2(v.x * f, v.y * f);
+	}
+
+	inline float operator*(const vector2& v1, const vector2& v2) {
+		return (v1.x*v2.x + v1.y*v2.y);
+	}
 };
