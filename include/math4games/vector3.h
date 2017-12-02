@@ -64,6 +64,23 @@ namespace math4games
 			return v1*v2;
 		}
 
+		/* cross product */
+		vector3 cross(const vector3& v) {
+			return vector3(
+				y*v.z - z*v.y,
+				z*v.x - x*v.z,
+				x*v.y - y*v.x
+			);
+		}
+
+		static vector3 cross(const vector3& v1, const vector3& v2) {
+			return vector3(
+				v1.y*v2.z - v1.z*v2.y,
+				v1.z*v2.x - v1.x*v2.z,
+				v1.x*v2.y - v1.y*v2.x
+			);
+		}
+
 		vector3 project(const vector3& v) {
 			return v* ((*this*v) / (v*v));
 		}
