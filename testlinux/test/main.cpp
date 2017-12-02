@@ -43,6 +43,20 @@ int main(int argc, char **argv) {
 
 	*/
 
+	/*
+	vector2 v(1,2);
+	log(v);
+	cout << v[0] << endl;
+	cout << v[1] << endl;
+	v[1] = 3;
+	log(v);
+	*/
+
+	cout << sizeof(vector2) << endl;
+	cout << sizeof(vector3) << endl;
+	cout << sizeof(vector4) << endl;
+	cout << sizeof(matrix2) << endl;
+
 	matrix2 m(
 		0, 1,
 		2, 1

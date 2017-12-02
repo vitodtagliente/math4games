@@ -47,5 +47,6 @@ namespace math4games
 		const float& operator()(int i, int j) const {
 			return (m[j][i]);
 		}
+
 	};
 };

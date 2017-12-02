@@ -79,6 +79,14 @@ namespace math4games
 		
 		/* Operators overloading */
 
+		float& operator[](int i){
+			return ((&x)[i]);
+		}
+
+		const float operator[](int i) const {
+			return ((&x)[i]);
+		}
+
 		vector2& operator=(const vector2& other) {
 			// check for self-assignment
 			if (this == &other)
