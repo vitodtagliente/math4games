@@ -117,5 +117,47 @@ namespace math4games
 			return !(*this == other);
 		}
 
+		matrix2 operator-() const {
+			return matrix2(
+				-m[0][0], -m[0][1],
+				-m[1][0], -m[1][1]
+			);
+		}
+
+		matrix2 operator+(const matrix2& other) const {
+			return matrix2(
+				m[0][0] + other(0, 0), m[0][1] + other(1, 0),
+				m[1][0] + other(0, 1), m[1][1] + other(1, 1)
+			);
+		}
+
+		matrix2 operator-(const matrix2& other) const {
+			return matrix2(
+				m[0][0] - other(0, 0), m[0][1] - other(1, 0),
+				m[1][0] - other(0, 1), m[1][1] - other(1, 1)
+			);
+		}
+
+		matrix2 operator*(const float s) const {
+			return matrix2(
+				m[0][0] * s, m[0][1] * s,
+				m[1][0] * s, m[1][1] * s
+			);
+		}
+
+		matrix2 operator/(const float s) const {
+			float f = 1.0f / s;
+			return matrix2(
+				m[0][0] * f, m[0][1] * f,
+				m[1][0] * f, m[1][1] * f
+			);
+		}
 	};
+
+	inline matrix2 operator*(const float s, const matrix2& m) {
+		return matrix2(
+			m(0, 0) * s, m(1, 0) * s,
+			m(0, 1) * s, m(1, 1) * s
+		);
+	}
 };

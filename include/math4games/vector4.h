@@ -123,7 +123,7 @@ namespace math4games
 			return *this;
 		}
 
-		vector4& operator*=(float s) {
+		vector4& operator*=(const float s) {
 			x *= s;
 			y *= s;
 			z *= s;
@@ -131,12 +131,12 @@ namespace math4games
 			return *this;
 		}
 
-		vector4& operator/=(float s) {
-			s = 1.0f / s;
-			x *= s;
-			y *= s;
-			z *= s;
-			w *= s;
+		vector4& operator/=(const float s) {
+			float f = 1.0f / s;
+			x *= f;
+			y *= f;
+			z *= f;
+			w *= f;
 			return *this;
 		}
 
@@ -163,11 +163,11 @@ namespace math4games
 			return vector4(x - v.x, y - v.y, z - v.z, w - v.w);
 		}
 
-		vector4 operator*(float s) const {
+		vector4 operator*(const float s) const {
 			return vector4(x * s, y * s, z * s, w * s);
 		}
 
-		vector4 operator/(float s) const {
+		vector4 operator/(const float s) const {
 			float f = 1.0f / s;
 			return vector4(x * f, y * f, z * f, w * f);
 		}
@@ -179,7 +179,7 @@ namespace math4games
 
 	};
 
-	inline vector4 operator*(float s, const vector4& v) {
+	inline vector4 operator*(const float s, const vector4& v) {
 		return vector4(v.x * s, v.y * s, v.z * s, v.w * s);
 	}
 };
