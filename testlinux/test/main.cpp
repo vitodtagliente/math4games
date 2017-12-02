@@ -72,8 +72,7 @@ int main(int argc, char **argv) {
 		1, 1
 	);
 	log(m);
-	float a00 = m(0, 0);
-	a00 = 9;
+	m(0, 0) = 9;
 	log(m);
 	log(m == matrix2::identity());
 	log(matrix2(1, 0, 0, 1) == matrix2::identity());

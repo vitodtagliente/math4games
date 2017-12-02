@@ -57,6 +57,10 @@ namespace math4games
 
 		/* Operators overloading */
 
+		float& operator()(int i, int j) {
+			return (m[j][i]);
+		}
+
 		const float& operator()(int i, int j) const {
 			return (m[j][i]);
 		}
