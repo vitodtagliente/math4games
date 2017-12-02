@@ -56,7 +56,7 @@ namespace math4games
 			return (v1 - v2).magnitude();
 		}
 
-		float dot(const vector3& v) {
+		float dot(const vector3& v) const {
 			return (*this)*v;
 		}
 
@@ -65,7 +65,7 @@ namespace math4games
 		}
 
 		/* cross product */
-		vector3 cross(const vector3& v) {
+		vector3 cross(const vector3& v) const {
 			return vector3(
 				y*v.z - z*v.y,
 				z*v.x - x*v.z,
@@ -79,6 +79,16 @@ namespace math4games
 				v1.z*v2.x - v1.x*v2.z,
 				v1.x*v2.y - v1.y*v2.x
 			);
+		}
+
+		/* scalar triple product */
+		float triple(const vector3& v1, const vector3& v2) const {
+			return ((*this).cross(v1))*v2;
+		}
+
+		/* scalar triple product */
+		static float triple(const vector3& v1, const vector3& v2, const vector3& v3) {
+			return (v1.cross(v2))*v3;
 		}
 
 		vector3 project(const vector3& v) {

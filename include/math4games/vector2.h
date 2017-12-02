@@ -53,7 +53,7 @@ namespace math4games
 			return (v1 - v2).magnitude();
 		}
 
-		float dot(const vector2& v) {
+		float dot(const vector2& v) const {
 			return (*this)*v;
 		}
 

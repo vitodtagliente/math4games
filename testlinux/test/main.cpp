@@ -8,8 +8,15 @@ void log(const vector2& v) {
 	cout << "x: " << v.x << " y: " << v.y << endl;
 }
 
+void log(const matrix2& m) {
+	cout << "Matrix" << endl;
+	cout << m(0, 0) << " " << m(1, 0) << endl;
+	cout << m(0, 1) << " " << m(1, 1) << endl;
+}
+
 int main(int argc, char **argv) {
     
+	/*
 	vector2 v(1);
 	log(v);
 	log(-v);
@@ -33,6 +40,17 @@ int main(int argc, char **argv) {
 	cout << vector2::distance(a, b) << endl;
 	log(a.project(b));
 	log(a.reject(b));
+
+	*/
+
+	matrix2 m(
+		0, 1,
+		2, 1
+	);
+	log(m);
+	float a00 = m(0, 0);
+	a00 = 9;
+	log(m);
 
 	int input;
 	cin >> input;
