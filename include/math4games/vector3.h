@@ -33,32 +33,51 @@ namespace math4games
 
 		~vector3() {}
 
-		float magnitude() {
+		vector3& set(float _x, float _y, float _z) {
+			x = _x;
+			y = _y;
+			z = _z;
+			return (*this);
+		}
+
+		float magnitude() const {
 			return sqrt(x*x + y*y + z*z);
 		}
 
-		vector3 normalize() {
-			return (*this / magnitude());
+		vector3& normalize() {
+			return (*this *= (1.0f / magnitude()));
+		}
+
+		float distance(const vector3& v) const {
+			return (*this - v).magnitude();
+		}
+
+		static float distance(const vector3& v1, const vector3& v2) {
+			return (v1 - v2).magnitude();
 		}
 
 		float dot(const vector3& v) {
-			return (x*v.x + y*v.y + z*v.z);
+			return (*this)*v;
 		}
 
-		vector3 cross(const vector3& v) {
-			return vector3(
-				y*v.z - z*v.y,
-				z*v.x - x*v.z,
-				x*v.y - y*v.x
-			);
+		static float dot(const vector3& v1, const vector3& v2) {
+			return v1*v2;
 		}
 
-		float distance(const vector3& v) {
-			return ((*this) - v).magnitude();
+		vector3 project(const vector3& v) {
+			return v* ((*this*v) / (v*v));
 		}
 
-		static float distance(vector3& v1, vector3& v2) {
-			return (v1 - v2).magnitude();
+		static vector3 project(const vector3& v1, const vector3& v2) {
+			return v2* ((v1*v2) / (v2*v2));
+		}
+
+		vector3 reject(const vector3& v) {
+			return (*this - v)* ((*this*v) / (v*v));
+		}
+
+		static vector3 reject(const vector3& v1, const vector3& v2) {
+			return (v1 - v2)* ((v1*v2) / (v2*v2));
 		}
 
 		/* Operators overloading */
@@ -81,10 +100,6 @@ namespace math4games
 			return *this;
 		}
 
-		vector3 operator+(const vector3& other) {
-			return vector3(*this) += other;
-		}
-
 		vector3& operator-=(const vector3& other) {
 			x -= other.x;
 			y -= other.y;
@@ -92,23 +107,11 @@ namespace math4games
 			return *this;
 		}
 
-		vector3 operator-(const vector3& other) {
-			return vector3(*this) -= other;
-		}
-
-		vector3 operator-() {
-			return (*this) * -1;
-		}
-
 		vector3& operator*=(float s) {
 			x *= s;
 			y *= s;
 			z *= s;
 			return *this;
-		}
-
-		vector3 operator*(float s) {
-			return vector3(*this) *= s;
 		}
 
 		vector3& operator/=(float s) {
@@ -119,19 +122,44 @@ namespace math4games
 			return *this;
 		}
 
-		vector3 operator/(float s) {
-			return vector3(*this) /= s;
-		}
-
-		bool operator==(const vector3& other) {
+		bool operator==(const vector3& other) const {
 			return x == other.x &&
-				y == other.y &&
-				z == other.z;
+				y == other.y && z == other.z;
 		}
 
-		bool operator!=(const vector3& other) {
+		bool operator!=(const vector3& other) const {
 			return !(*this == other);
 		}
 
+		vector3 operator-() const {
+			return vector3(-x, -y, -z);
+		}
+
+		vector3 operator+(const vector3& v) const {
+			return vector3(x + v.x, y + v.y, z + v.z);
+		}
+
+		vector3 operator-(const vector3& v) const {
+			return vector3(x - v.x, y - v.y, z - v.z);
+		}
+
+		vector3 operator*(float s) const {
+			return vector3(x * s, y * s, z * s);
+		}
+
+		vector3 operator/(float s) const {
+			float f = 1.0f / s;
+			return vector3(x * f, y * f, z * f);
+		}
+
+		/* dot product */
+		float operator*(const vector3& v) const {
+			return (x*v.x + y*v.y + z*v.z);
+		}
+
 	};
+
+	inline vector3 operator*(float s, const vector3& v) {
+		return vector3(v.x * s, v.y * s, v.z * s);
+	}
 };

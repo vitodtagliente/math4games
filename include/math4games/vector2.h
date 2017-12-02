@@ -37,28 +37,46 @@ namespace math4games
 			return (*this);
 		}
 
-		/*
-		float magnitude() {
+		float magnitude() const {
 			return sqrt(x*x + y*y);
 		}
 
-		vector2 normalize() {
-			return (*this / magnitude());
+		vector2& normalize() {
+			return (*this *= (1.0f / magnitude()));
+		}
+
+		float distance(const vector2& v) const {
+			return (*this - v).magnitude();
+		}
+
+		static float distance(const vector2& v1, const vector2& v2) {
+			return (v1 - v2).magnitude();
 		}
 
 		float dot(const vector2& v) {
-			return (x*v.x + y*v.y);
+			return (*this)*v;
 		}
 
-		float distance(const vector2& v) {
-			return ((*this) - v).magnitude();
+		static float dot(const vector2& v1, const vector2& v2) {
+			return v1*v2;
 		}
 
-		static float distance(vector2& v1, vector2& v2) {
-			return (v1 - v2).magnitude();
+		vector2 project(const vector2& v) {
+			return v* ((*this*v) / (v*v));
 		}
-		*/
 
+		static vector2 project(const vector2& v1, const vector2& v2) {
+			return v2* ((v1*v2) / (v2*v2));
+		}
+		
+		vector2 reject(const vector2& v) {
+			return (*this - v)* ((*this*v) / (v*v));
+		}
+
+		static vector2 reject(const vector2& v1, const vector2& v2) {
+			return (v1 - v2)* ((v1*v2) / (v2*v2));
+		}
+		
 		/* Operators overloading */
 
 		vector2& operator=(const vector2& other) {
@@ -96,43 +114,44 @@ namespace math4games
 			return *this;
 		}
 
-		bool operator==(const vector2& other) {
+		bool operator==(const vector2& other) const {
 			return x == other.x &&
 				y == other.y;
 		}
 
-		bool operator!=(const vector2& other) {
+		bool operator!=(const vector2& other) const {
 			return !(*this == other);
 		}
 
+		vector2 operator-() const {
+			return vector2(-x, -y);
+		}
+
+		vector2 operator+(const vector2& v) const {
+			return vector2(x + v.x, y + v.y);
+		}
+
+		vector2 operator-(const vector2& v) const {
+			return vector2(x - v.x, y - v.y);
+		}
+
+		vector2 operator*(float s) const {
+			return vector2(x * s, y * s);
+		}
+
+		vector2 operator/(float s) const {
+			float f = 1.0f / s;
+			return vector2(x * f, y * f);
+		}
+
+		/* dot product */
+		float operator*(const vector2& v) const {
+			return (x*v.x + y*v.y);
+		}
+		
 	};
-
-	inline vector2 operator-(const vector2& v) {
-		return vector2(-v.x, -v.y);
-	}
-
-	inline vector2 operator+(const vector2& v1, const vector2& v2) {
-		return vector2(v1.x + v2.x, v1.y + v2.y);
-	}
-
-	inline vector2 operator-(const vector2& v1, const vector2& v2) {
-		return vector2(v1.x - v2.x, v1.y - v2.y);
-	}
-
-	inline vector2 operator*(const vector2& v, float s) {
-		return vector2(v.x * s, v.y * s);
-	}
 
 	inline vector2 operator*(float s, const vector2& v) {
 		return vector2(v.x * s, v.y * s);
-	}
-
-	inline vector2 operator/(const vector2& v, float s) {
-		float f = 1.0f / s;
-		return vector2(v.x * f, v.y * f);
-	}
-
-	inline float operator*(const vector2& v1, const vector2& v2) {
-		return (v1.x*v2.x + v1.y*v2.y);
 	}
 };
