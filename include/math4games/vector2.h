@@ -84,6 +84,8 @@ namespace math4games
 		}
 
 		const float operator[](int i) const {
+			if (i >= 2)
+				return 0.0f;
 			return ((&x)[i]);
 		}
 

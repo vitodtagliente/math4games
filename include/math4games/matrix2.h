@@ -27,6 +27,19 @@ namespace math4games
 			m[1][0] = v2.x; m[1][1] = v2.y;
 		}
 
+		matrix2& set(float a00, float a01,
+			float a10, float a11) {
+			m[0][0] = a00; m[0][1] = a01;
+			m[1][0] = a10; m[1][1] = a11;
+			return (*this);
+		}
+
+		matrix2& set(const vector2& v1, const vector2& v2) {
+			m[0][0] = v1.x; m[0][1] = v1.y;
+			m[1][0] = v2.x; m[1][1] = v2.y;
+			return (*this);
+		}
+
 		vector2 row(int j) const {
 			return vector2(m[j][0], m[j][1]);
 		}
@@ -46,6 +59,62 @@ namespace math4games
 
 		const float& operator()(int i, int j) const {
 			return (m[j][i]);
+		}
+
+		matrix2& operator=(const matrix2& other) {
+			// check for self-assignment
+			if (this == &other)
+				return *this;
+
+			m[0][0] = other(0, 0);
+			m[0][1] = other(1, 0);
+			m[1][0] = other(0, 1);
+			m[1][1] = other(1, 1);
+ 			return *this;
+		}
+
+		matrix2& operator+=(const matrix2& other) {
+			m[0][0] += other(0, 0);
+			m[0][1] += other(1, 0);
+			m[1][0] += other(0, 1);
+			m[1][1] += other(1, 1);
+			return *this;
+		}
+
+		matrix2& operator-=(const matrix2& other) {
+			m[0][0] -= other(0, 0);
+			m[0][1] -= other(1, 0);
+			m[1][0] -= other(0, 1);
+			m[1][1] -= other(1, 1);
+			return *this;
+		}
+
+		matrix2& operator*=(float s) {
+			m[0][0] *= s;
+			m[0][1] *= s;
+			m[1][0] *= s;
+			m[1][1] *= s;
+			return *this;
+		}
+
+		matrix2& operator/=(float s) {
+			s = 1.0f / s;
+			m[0][0] *= s;
+			m[0][1] *= s;
+			m[1][0] *= s;
+			m[1][1] *= s;
+			return *this;
+		}
+
+		bool operator==(const matrix2& other) const {
+			return m[0][0] == other(0, 0) &&
+				m[0][1] == other(1, 0) &&
+				m[1][0] == other(0, 1) &&
+				m[1][1] == other(1, 1);
+		}
+
+		bool operator!=(const matrix2& other) const {
+			return !(*this == other);
 		}
 
 	};

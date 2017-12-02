@@ -14,6 +14,10 @@ void log(const matrix2& m) {
 	cout << m(0, 1) << " " << m(1, 1) << endl;
 }
 
+void log(bool expr) {
+	cout << ((expr) ? "true" : "false") << endl;
+}
+
 int main(int argc, char **argv) {
     
 	/*
@@ -52,10 +56,12 @@ int main(int argc, char **argv) {
 	log(v);
 	*/
 
+	/*
 	cout << sizeof(vector2) << endl;
 	cout << sizeof(vector3) << endl;
 	cout << sizeof(vector4) << endl;
 	cout << sizeof(matrix2) << endl;
+	*/
 
 	matrix2 m(
 		0, 1,
@@ -65,6 +71,10 @@ int main(int argc, char **argv) {
 	float a00 = m(0, 0);
 	a00 = 9;
 	log(m);
+	log(m == matrix2::identity());
+	log(matrix2(1, 0, 0, 1) == matrix2::identity());
+
+
 
 	int input;
 	cin >> input;
