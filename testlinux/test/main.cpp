@@ -77,7 +77,14 @@ int main(int argc, char **argv) {
 	log(m == matrix2::identity());
 	log(matrix2(1, 0, 0, 1) == matrix2::identity());
 
+	log(matrix2::identity() * vector2(2, 0));
+	log(vector2(2, 0) * matrix2::identity());
+	log(matrix2(0, 1, 2, 1)*matrix2(2, 0, 0, 1));
+
 	log(m += n);
+	log(m);
+	cout << m.determinant() << endl;
+	cout << matrix2::identity().determinant() << endl;
 
 	int input;
 	cin >> input;

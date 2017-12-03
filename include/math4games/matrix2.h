@@ -55,6 +55,25 @@ namespace math4games
 			);
 		}
 
+		matrix2 transpose() {
+			return matrix2(
+				m[0][0], m[1][0],
+				m[0][1], m[1][1]
+			);
+		}
+
+		matrix2 inverse() {
+			return matrix2();
+		}
+
+		matrix2 adjugate() {
+			return matrix2();
+		}
+
+		float determinant() const {
+			return m[0][0] * m[1][1] - (m[0][1] * m[1][0]);
+		}
+
 		/* Operators overloading */
 
 		float& operator()(int i, int j) {
@@ -156,12 +175,35 @@ namespace math4games
 				m[1][0] * f, m[1][1] * f
 			);
 		}
+
+		matrix2 operator*(const matrix2& n) const {
+			return matrix2(
+				m[0][0] * n(0, 0) + m[0][1] * n(0, 1), m[0][0] * n(1, 0) + m[0][1] * n(1, 1),
+				m[1][0] * n(0, 0) + m[1][1] * n(0, 1), m[1][0] * n(1, 0) + m[1][1] * n(1, 1)
+			);
+		}
+
+		// TODO
+		vector2 operator*(const vector2& v) const {
+			return vector2(
+				m[0][0] * v[0] + m[0][1] * v[1],
+				m[1][0] * v[0] + m[1][1] * v[1]
+			);
+		}
 	};
 
 	inline matrix2 operator*(const float s, const matrix2& m) {
 		return matrix2(
 			m(0, 0) * s, m(1, 0) * s,
 			m(0, 1) * s, m(1, 1) * s
+		);
+	}
+
+	// TODO
+	inline vector2 operator*(const vector2& v, const matrix2& m) {
+		return vector2(
+			m(0, 0) * v[0] + m(1, 0) * v[1],
+			m(0, 1) * v[0] + m(1, 1) * v[1]
 		);
 	}
 };
