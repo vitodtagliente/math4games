@@ -40,6 +40,10 @@ namespace math4games
 			return (*this);
 		}
 
+		static vector3 zero() {
+			return vector3(0.0f, 0.0f, 0.0f);
+		}
+
 		float magnitude() const {
 			return sqrt(x*x + y*y + z*z);
 		}

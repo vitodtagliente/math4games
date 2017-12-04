@@ -48,6 +48,13 @@ namespace math4games
 			return vector2(m[0][i], m[1][i]);
 		}
 
+		static matrix2 zero() {
+			return matrix2(
+				0.0f, 0.0f,
+				0.0f, 0.0f
+			);
+		}
+
 		static matrix2 identity() {
 			return matrix2(
 				1.0f, 0.0f,
@@ -62,12 +69,21 @@ namespace math4games
 			);
 		}
 
-		matrix2 inverse() {
-			return matrix2();
+		static matrix2 inverse(const matrix2& m, bool& invertible) {
+			float d = m.determinant();
+			if (d != 0.0f) {
+				invertible = true;
+				return (m.adjugate()) * (1.0f / d);
+			}
+			invertible = false;
+			return m;
 		}
 
-		matrix2 adjugate() {
-			return matrix2();
+		matrix2 adjugate() const {
+			return matrix2(
+				m[1][1], -m[0][1],
+				-m[1][0], m[0][0]
+			);
 		}
 
 		float determinant() const {
@@ -183,7 +199,6 @@ namespace math4games
 			);
 		}
 
-		// TODO
 		vector2 operator*(const vector2& v) const {
 			return vector2(
 				m[0][0] * v[0] + m[0][1] * v[1],
@@ -199,11 +214,10 @@ namespace math4games
 		);
 	}
 
-	// TODO
 	inline vector2 operator*(const vector2& v, const matrix2& m) {
 		return vector2(
-			m(0, 0) * v[0] + m(1, 0) * v[1],
-			m(0, 1) * v[0] + m(1, 1) * v[1]
+			v[0] * m(0, 0) + v[1] * m(0, 1),
+			v[0] * m(1, 0) + v[1] * m(1, 1)
 		);
 	}
 };

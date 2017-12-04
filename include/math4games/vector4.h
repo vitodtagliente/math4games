@@ -43,6 +43,10 @@ namespace math4games
 			return (*this);
 		}
 
+		static vector4 zero() {
+			return vector4(0.0f, 0.0f, 0.0f, 0.0f);
+		}
+
 		float magnitude() const {
 			return sqrt(x*x + y*y + z*z + w*w);
 		}

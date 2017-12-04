@@ -37,6 +37,10 @@ namespace math4games
 			return (*this);
 		}
 
+		static vector2 zero() {
+			return vector2(0.0f, 0.0f);
+		}
+
 		float magnitude() const {
 			return sqrt(x*x + y*y);
 		}
