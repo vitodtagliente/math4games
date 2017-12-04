@@ -51,12 +51,12 @@ namespace math4games
 			return (*this);
 		}
 
-		vector2 row(int j) const {
-			return vector2(m[j][0], m[j][1]);
+		vector3 row(int j) const {
+			return vector3(m[j][0], m[j][1], m[j][2]);
 		}
 
-		vector2 column(int i) const {
-			return vector2(m[0][i], m[1][i]);
+		vector3 column(int i) const {
+			return vector3(m[0][i], m[1][i], m[2][i]);
 		}
 
 		static matrix3 zero() {
@@ -245,14 +245,15 @@ namespace math4games
 				m[2][0] * n(2, 0) + m[2][1] * n(2, 1) + m[3][2] * n(2, 2)
 			);
 		}
-		/*
+		
 		vector3 operator*(const vector3& v) const {
 			return vector3(
-				m[0][0] * v[0] + m[0][1] * v[1],
-				m[1][0] * v[0] + m[1][1] * v[1]
+				m[0][0] * v[0] + m[0][1] * v[1] + m[0][2] * v[2],
+				m[1][0] * v[0] + m[1][1] * v[1] + m[1][2] * v[2],
+				m[2][0] * v[0] + m[2][1] * v[1] + m[2][2] * v[2]
 			);
 		}
-		*/
+		
 	};
 
 	inline matrix3 operator*(const float s, const matrix3& m) {
@@ -262,12 +263,12 @@ namespace math4games
 			m(0, 2) * s, m(1, 2) * s, m(2, 2) * s
 		);
 	}
-	/*
-	inline vector2 operator*(const vector2& v, const matrix3& m) {
-		return vector2(
-			v[0] * m(0, 0) + v[1] * m(0, 1),
-			v[0] * m(1, 0) + v[1] * m(1, 1)
+
+	inline vector3 operator*(const vector2& v, const matrix3& m) {
+		return vector3(
+			v[0] * m(0, 0) + v[1] * m(0, 1) + v[2] * m(0, 2),
+			v[0] * m(1, 0) + v[1] * m(1, 1) + v[2] * m(1, 2),
+			v[0] * m(2, 0) + v[1] * m(2, 1) + v[2] * m(2, 2)
 		);
 	}
-	*/
 };
