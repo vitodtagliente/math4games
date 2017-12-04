@@ -16,10 +16,12 @@ namespace math4games
 			m[1][0] = m[1][1] = 0.0f;
 		}
 
-		matrix2(float a00, float a01, 
-			float a10, float a11) {
-			m[0][0] = a00; m[0][1] = a01;
-			m[1][0] = a10; m[1][1] = a11;
+		matrix2(
+			float a00, float a10, 
+			float a01, float a11
+		) {
+			m[0][0] = a00; m[0][1] = a10;
+			m[1][0] = a01; m[1][1] = a11;
 		}
 
 		matrix2(const vector2& v1, const vector2& v2) {
@@ -27,10 +29,12 @@ namespace math4games
 			m[1][0] = v2.x; m[1][1] = v2.y;
 		}
 
-		matrix2& set(float a00, float a01,
-			float a10, float a11) {
-			m[0][0] = a00; m[0][1] = a01;
-			m[1][0] = a10; m[1][1] = a11;
+		matrix2& set(
+			float a00, float a10,
+			float a01, float a11
+		) {
+			m[0][0] = a00; m[0][1] = a10;
+			m[1][0] = a01; m[1][1] = a11;
 			return (*this);
 		}
 
@@ -67,6 +71,13 @@ namespace math4games
 				m[0][0], m[1][0],
 				m[0][1], m[1][1]
 			);
+		}
+
+		matrix2 inverse() {
+			float d = determinant();
+			if (d != 0.0f)
+				return (adjugate()) * (1.0f / d);
+			return (*this);
 		}
 
 		static matrix2 inverse(const matrix2& m, bool& invertible) {
@@ -128,7 +139,7 @@ namespace math4games
 			return *this;
 		}
 
-		matrix2& operator*=(float s) {
+		matrix2& operator*=(const float s) {
 			m[0][0] *= s;
 			m[0][1] *= s;
 			m[1][0] *= s;
@@ -136,12 +147,12 @@ namespace math4games
 			return *this;
 		}
 
-		matrix2& operator/=(float s) {
-			s = 1.0f / s;
-			m[0][0] *= s;
-			m[0][1] *= s;
-			m[1][0] *= s;
-			m[1][1] *= s;
+		matrix2& operator/=(const float s) {
+			float d = 1.0f / s;
+			m[0][0] *= d;
+			m[0][1] *= d;
+			m[1][0] *= d;
+			m[1][1] *= d;
 			return *this;
 		}
 

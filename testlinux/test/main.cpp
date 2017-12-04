@@ -86,6 +86,13 @@ int main(int argc, char **argv) {
 	cout << m.determinant() << endl;
 	cout << matrix2::identity().determinant() << endl;
 
+	matrix2 c(4, 3, 1, 1);
+	log(c);
+	log(c.inverse());
+	log(c*c.inverse());
+	cout << matrix2(1, -4, 0, 3).determinant() << endl;
+	cout << matrix2(2, 1, -1, 3).determinant() << endl;
+
 	int input;
 	cin >> input;
     return 0;
