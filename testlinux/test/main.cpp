@@ -62,6 +62,8 @@ int main(int argc, char **argv) {
 	cout << sizeof(matrix2) << endl;
 	cout << sizeof(matrix3) << endl;
 	
+	/*
+
 	matrix2 m(
 		0, 1,
 		2, 1
@@ -91,6 +93,15 @@ int main(int argc, char **argv) {
 	log(c*c.inverse());
 	cout << matrix2(1, -4, 0, 3).determinant() << endl;
 	cout << matrix2(2, 1, -1, 3).determinant() << endl;
+
+	*/
+
+	vector2 v(8, 2);
+	cout << v[0] << " " << v[1] << endl;
+	v[1] = 4;
+	log(v);
+	v[3] = 5;
+	log(v);
 
 	int input;
 	cin >> input;
