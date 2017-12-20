@@ -5,11 +5,8 @@
 namespace math4games
 {
 	template<class T>
-	class tvector2
+	struct tvector2
 	{
-
-	public:
-
 		T x, y;
 
 		tvector2<T>() = default;

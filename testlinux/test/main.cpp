@@ -1,5 +1,6 @@
 #include <iostream>
-#include <math4games/math4games.h>
+#include <chrono>
+#include <math4games/vector2.h>
 
 using namespace math4games;
 using namespace std;
@@ -7,19 +8,50 @@ using namespace std;
 void log(const vector2& v) {
 	cout << "x: " << v.x << " y: " << v.y << endl;
 }
-
+/*
 void log(const matrix2& m) {
 	cout << "Matrix" << endl;
 	cout << m(0, 0) << " " << m(1, 0) << endl;
 	cout << m(0, 1) << " " << m(1, 1) << endl;
 }
-
+*/
 void log(bool expr) {
 	cout << ((expr) ? "true" : "false") << endl;
 }
 
+class Timer
+{
+	// make things readable
+	using clk = std::chrono::steady_clock;
+
+	clk::time_point b; // begin
+	clk::time_point e; // end
+
+public:
+	void clear() { b = e = clk::now(); }
+	void start() { b = clk::now(); }
+	void stop() { e = clk::now(); }
+
+	friend std::ostream& operator<<(std::ostream& o, const Timer& timer)
+	{
+		return o << timer.secs();
+	}
+
+	// return time difference in seconds
+	double secs() const
+	{
+		if (e <= b)
+			return 0.0;
+		auto d = std::chrono::duration_cast<std::chrono::microseconds>(e - b);
+		return d.count() / 1000000.0;
+	}
+};
+
 int main(int argc, char **argv) {
-    
+
+	Timer timer;
+	timer.start();
+
 	/*
 	vector2 v(1);
 	log(v);
@@ -55,13 +87,13 @@ int main(int argc, char **argv) {
 	v[1] = 3;
 	log(v);
 	*/
-		
+	/*
 	cout << sizeof(vector2) << endl;
 	cout << sizeof(vector3) << endl;
 	cout << sizeof(vector4) << endl;
 	cout << sizeof(matrix2) << endl;
 	cout << sizeof(matrix3) << endl;
-	
+	*/
 	/*
 
 	matrix2 m(
@@ -102,8 +134,11 @@ int main(int argc, char **argv) {
 	log(v);
 	v[3] = 5;
 	log(v);
-	log(3 * v);
+	log(3.f * v);
 	log(v * 3);
+
+	timer.stop();
+	cout << endl << "execution time: " << timer << " secs" << '\n';
 
 	int input;
 	cin >> input;
