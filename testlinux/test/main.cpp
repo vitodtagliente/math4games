@@ -102,6 +102,8 @@ int main(int argc, char **argv) {
 	log(v);
 	v[3] = 5;
 	log(v);
+	log(3 * v);
+	log(v * 3);
 
 	int input;
 	cin >> input;
