@@ -4,96 +4,95 @@
 
 namespace math4games
 {
-	class vector2
+	template<class T>
+	class tvector2
 	{
 
 	public:
 
-		float x, y;
+		T x, y;
 
-		vector2() {
-			x = y = 0.0f;
-		}
+		tvector2<T>() = default;
 
-		vector2(float value) {
+		tvector2<T>(T value) {
 			x = y = value;
 		}
 
-		vector2(float _x, float _y) {
+		tvector2<T>(T _x, T _y) {
 			x = _x;
 			y = _y;
 		}
 
-		vector2(const vector2& other) {
+		tvector2<T>(const tvector2<T>& other) {
 			x = other.x;
 			y = other.y;
 		}
 
-		~vector2() {}
+		~tvector2<T>() {}
 
-		vector2& set(float _x, float _y) {
+		tvector2<T>& set(T _x, T _y) {
 			x = _x;
 			y = _y;
 			return (*this);
 		}
 
-		static vector2 zero() {
-			return vector2(0.0f, 0.0f);
+		static tvector2<T> zero() {
+			return tvector2<T>(0.0f, 0.0f);
 		}
 
-		float magnitude() const {
+		T magnitude() const {
 			return sqrt(x*x + y*y);
 		}
 
-		vector2& normalize() {
+		tvector2<T>& normalize() {
 			return (*this *= (1.0f / magnitude()));
 		}
 
-		float distance(const vector2& v) const {
+		T distance(const tvector2<T>& v) const {
 			return (*this - v).magnitude();
 		}
 
-		static float distance(const vector2& v1, const vector2& v2) {
+		static T distance(const tvector2<T>& v1, const tvector2<T>& v2) {
 			return (v1 - v2).magnitude();
 		}
 
-		float dot(const vector2& v) const {
+		T dot(const tvector2<T>& v) const {
 			return (*this)*v;
 		}
 
-		static float dot(const vector2& v1, const vector2& v2) {
+		static T dot(const tvector2<T>& v1, const tvector2<T>& v2) {
 			return v1*v2;
 		}
 
-		vector2 project(const vector2& v) {
+		tvector2<T> project(const tvector2<T>& v) {
 			return v* ((*this*v) / (v*v));
 		}
 
-		static vector2 project(const vector2& v1, const vector2& v2) {
+		static tvector2<T> project(const tvector2<T>& v1, const tvector2<T>& v2) {
 			return v2* ((v1*v2) / (v2*v2));
 		}
 		
-		vector2 reject(const vector2& v) {
+		tvector2<T> reject(const tvector2<T>& v) {
 			return (*this - v)* ((*this*v) / (v*v));
 		}
 
-		static vector2 reject(const vector2& v1, const vector2& v2) {
+		static tvector2<T> reject(const tvector2<T>& v1, const tvector2<T>& v2) {
 			return (v1 - v2)* ((v1*v2) / (v2*v2));
 		}
 		
 		/* Operators overloading */
 
-		float& operator[](int i){
+		T& operator[](int i){
 			return ((&x)[i]);
 		}
 
-		const float operator[](int i) const {
+		const T operator[](int i) const {
 			if (i >= 2)
 				return 0.0f;
 			return ((&x)[i]);
 		}
 
-		vector2& operator=(const vector2& other) {
+		tvector2<T>& operator=(const tvector2<T>& other) {
 			// check for self-assignment
 			if (this == &other)
 				return *this;
@@ -103,69 +102,74 @@ namespace math4games
 			return *this;
 		}
 
-		vector2& operator+=(const vector2& other) {
+		tvector2<T>& operator+=(const tvector2<T>& other) {
 			x += other.x;
 			y += other.y;
 			return *this;
 		}
 
-		vector2& operator-=(const vector2& other) {
+		tvector2<T>& operator-=(const tvector2<T>& other) {
 			x -= other.x;
 			y -= other.y;
 			return *this;
 		}
 
-		vector2& operator*=(const float s) {
+		tvector2<T>& operator*=(const T s) {
 			x *= s;
 			y *= s;
 			return *this;
 		}
 
-		vector2& operator/=(const float s) {
-			float f = 1.0f / s;
+		tvector2<T>& operator/=(const T s) {
+			T f = 1.0f / s;
 			x *= f;
 			y *= f;
 			return *this;
 		}
 
-		bool operator==(const vector2& other) const {
+		bool operator==(const tvector2<T>& other) const {
 			return x == other.x &&
 				y == other.y;
 		}
 
-		bool operator!=(const vector2& other) const {
+		bool operator!=(const tvector2<T>& other) const {
 			return !(*this == other);
 		}
 
-		vector2 operator-() const {
-			return vector2(-x, -y);
+		tvector2<T> operator-() const {
+			return tvector2<T>(-x, -y);
 		}
 
-		vector2 operator+(const vector2& v) const {
-			return vector2(x + v.x, y + v.y);
+		tvector2<T> operator+(const tvector2<T>& v) const {
+			return tvector2<T>(x + v.x, y + v.y);
 		}
 
-		vector2 operator-(const vector2& v) const {
-			return vector2(x - v.x, y - v.y);
+		tvector2<T> operator-(const tvector2<T>& v) const {
+			return tvector2<T>(x - v.x, y - v.y);
 		}
 
-		vector2 operator*(const float s) const {
-			return vector2(x * s, y * s);
+		tvector2<T> operator*(const T s) const {
+			return tvector2<T>(x * s, y * s);
 		}
 
-		vector2 operator/(const float s) const {
-			float f = 1.0f / s;
-			return vector2(x * f, y * f);
+		tvector2<T> operator/(const T s) const {
+			T f = 1.0f / s;
+			return tvector2<T>(x * f, y * f);
 		}
 
 		/* dot product */
-		float operator*(const vector2& v) const {
+		T operator*(const tvector2<T>& v) const {
 			return (x*v.x + y*v.y);
 		}
 		
 	};
 
-	inline vector2 operator*(const float s, const vector2& v) {
-		return vector2(v.x * s, v.y * s);
+	template<class T>
+	inline tvector2<T> operator*(const T s, const tvector2<T>& v) {
+		return tvector2<T>(v.x * s, v.y * s);
 	}
+
+	typedef tvector2<float> vector2;
+	typedef tvector2<double> dvector2;
+	typedef tvector2<int> ivector2;
 };
