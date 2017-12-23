@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <assert.h>
 
 namespace math4games
 {
@@ -80,6 +81,7 @@ namespace math4games
 		/* Operators overloading */
 
 		T& operator[](int i){
+			assert(i >= 0 && i < 2);
 			return ((&x)[i]);
 		}
 

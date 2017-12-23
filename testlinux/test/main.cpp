@@ -1,6 +1,7 @@
 #include <iostream>
 #include <chrono>
 #include <math4games/vector2.h>
+#include <math4games/vector.h>
 
 using namespace math4games;
 using namespace std;
@@ -8,6 +9,15 @@ using namespace std;
 void log(const vector2& v) {
 	cout << "x: " << v.x << " y: " << v.y << endl;
 }
+
+template<size_t n, class T>
+void log(const vector<n, T>& v) {
+	cout << "Vector: ";
+	for (int i = 0; i < n; i++)
+		cout << v[i] << " ";
+	cout << endl;
+}
+
 /*
 void log(const matrix2& m) {
 	cout << "Matrix" << endl;
@@ -132,10 +142,25 @@ int main(int argc, char **argv) {
 	cout << v[0] << " " << v[1] << endl;
 	v[1] = 4;
 	log(v);
-	v[3] = 5;
+	v[1] = 5;
 	log(v);
 	log(3.f * v);
 	log(v * 3);
+
+
+	cout << endl << endl << endl;
+
+	vec2 g;
+	log(g);
+	vec2 g1(1);
+	log(g1);
+	g[0] = 8;
+	float f = g[0];
+	f = 5;
+	log(g);
+	vec2 t{ 3,4 };
+	log(t);
+
 
 	timer.stop();
 	cout << endl << "execution time: " << timer << " secs" << '\n';
