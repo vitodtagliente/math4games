@@ -188,7 +188,7 @@ namespace math4games
 		vec2(const T& value) : vector<2, T>(value) {}
 		vec2(const std::initializer_list<T> args) : vector<2, T>(args) {}
 	};
-
+	
 	template<class T>
 	struct vec3 : public vector<3, T>
 	{
@@ -207,7 +207,31 @@ namespace math4games
 		vec3(const std::initializer_list<T> args) : vector<3, T>(args) {}
 
 		/* cross product */
+		vec3 cross(const vec3 v) const {
+			return vec3(
+				y*v.z - z*v.y,
+				z*v.x - x*v.z,
+				x*v.y - y*v.x
+			);
+		}
 
+		static vec3 cross(const vec3& v, const vec3& w) {
+			return tvector3<T>(
+				v.y*w.z - v.z*w.y,
+				v.z*w.x - v.x*w.z,
+				v.x*w.y - v.y*w.x
+			);
+		}
+
+		/* scalar triple product */
+		float triple(const vec3& v, const vec3& w) const {
+			return ((*this).cross(v))*w;
+		}
+
+		/* scalar triple product */
+		static float triple(const vec3& v1, const vec3& v2, const vec3<T>& v3) {
+			return (v1.cross(v2))*v3;
+		}
 	};
 
 	template<class T>
