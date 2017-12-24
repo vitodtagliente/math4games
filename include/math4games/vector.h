@@ -18,16 +18,15 @@ namespace math4games
 		}
 
 		vector(const T& value) {
-			for (auto& element : data)
-				element = value;
+			data.fill(value);
 		}
 
 		vector(const std::initializer_list<T> args) {
-			assert(args.size() < n);
-			data = args;
-			if (args.size() < n - 1) {
-				for (i = args.size(); i < n; i++)
-					args[i] = {};
+			assert(args.size() <= n);
+			int i = 0;
+			for (auto begin = args.begin(); begin != args.end(); ++begin) {
+				data.at(i) = *begin;
+				i++;
 			}
 		}
 
@@ -48,12 +47,189 @@ namespace math4games
 			return sqrt(result);
 		}
 
-		/*
-		vector<n, T> normalize() {
-			return (*this * )
+		T dot(const vector<n, T>& other) const {
+			return (*this)*other;
 		}
-		*/
+
+		static T dot(const vector<n, T>& v, const vector<n, T>& w) {
+			return v*w;
+		}
+
+		vector<n, T> normalize() {
+			return (*this *= (1.0f / magnitude()));
+		}
+
+		vector<n, T> project(const vector<n, T>& v) {
+			return v* ((*this*v) / (v*v));
+		}
+
+		static vector<n, T> project(const vector<n, T>& v, const vector<n, T>& w) {
+			return w* ((v*w) / (v*w));
+		}
+
+		vector<n, T> reject(const vector<n, T>& v) {
+			return (*this - v)* ((*this*v) / (v*v));
+		}
+
+		static vector<n, T> reject(const vector<n, T>& v, const vector<n, T>& w) {
+			return (v - w)* ((v*w) / (v*w));
+		}
+
+		/* Operators overloading */
+
+		vector<n, T>& operator= (const vector<n, T>& other) {
+			// check for self-assignment
+			if (this == &other)
+				return *this;
+
+			for (std::size_t i = 0; i < n; i++)
+				data[i] = other[i];
+			return *this;
+		}
+
+		bool operator== (const vector<n, T>& other) const {
+			return (*this).data == other.data;
+		}
+
+		bool operator!= (const vector<n, T>& other) const {
+			return !(*this == other);
+		}
+
+		vector<n, T>& operator+= (const vector<n, T>& other) {
+			for (std::size_t i = 0; i < n; i++)
+				data[i] += other[i];
+			return *this;
+		}
+
+		vector<n, T>& operator-= (const vector<n, T>& other) {
+			for (std::size_t i = 0; i < n; i++)
+				data[i] -= other[i];
+			return *this;
+		}
+
+		vector<n, T>& operator*= (const T s) {
+			for (std::size_t i = 0; i < n; i++)
+				data[i] *= s;
+			return *this;
+		}
+
+		vector<n, T>& operator/= (const T s) {
+			T f = 1.0f / s;
+			for (std::size_t i = 0; i < n; i++)
+				data[i] *= f;
+			return *this;
+		}
+
+		vector<n, T> operator- () const {
+			vector<n, T> v;
+			for (std::size_t i = 0; i < n; i++)
+				v[i] = -data[i];
+			return v;
+		}
+
+		vector<n, T> operator+ (const vector<n, T>& w) const {
+			vector<n, T> v;
+			for (std::size_t i = 0; i < n; i++)
+				v[i] = data[i] + w[i];
+			return v;
+		}
+
+		vector<n, T> operator- (const vector<n, T>& w) const {
+			vector<n, T> v;
+			for (std::size_t i = 0; i < n; i++)
+				v[i] = data[i] - w[i];
+			return v;
+		}
+
+		vector<n, T> operator* (const T s) const {
+			vector<n, T> v;
+			for (std::size_t i = 0; i < n; i++)
+				v[i] = data[i] * s;
+			return v;
+		}
+
+		vector<n, T> operator/ (const T s) const {
+			T f = 1.0f / s;
+			vector<n, T> v;
+			for (std::size_t i = 0; i < n; i++)
+				v[i] = data[i] * f;
+			return v;
+		}
+
+		/* dot product */
+		T operator*(const vector<n, T>& v) const {
+			T dot{};
+			for (std::size_t i = 0; i < n; i++)
+				dot += data[i] * w[i];
+			return dot;
+		}
 	};
 
-	typedef vector<2, float> vec2;
+	template<std::size_t n, class T>
+	inline vector<n, T> operator* (const T s, const vector<n, T>& v) {
+		vector<n, T> w;
+		for (std::size_t i = 0; i < n; i++)
+			w[i] = v[i] * s;
+		return w;
+	}
+
+	template<class T>
+	struct vec2 : public vector<2, T>
+	{
+		float& x = data[0];
+		float& y = data[1];
+
+		vec2() : vector<2, T>() {}
+		vec2(T _x, T _y) {
+			data[0] = _x;
+			data[1] = _y;
+		}
+
+		vec2(const T& value) : vector<2, T>(value) {}
+		vec2(const std::initializer_list<T> args) : vector<2, T>(args) {}
+	};
+
+	template<class T>
+	struct vec3 : public vector<3, T>
+	{
+		float& x = data[0];
+		float& y = data[1];
+		float& z = data[2];
+		
+		vec3() : vector<3, T>() {}
+		vec3(T _x, T _y, T _z) {
+			data[0] = _x;
+			data[1] = _y;
+			data[2] = _z;
+		}
+
+		vec3(const T& value) : vector<3, T>(value) {}
+		vec3(const std::initializer_list<T> args) : vector<3, T>(args) {}
+
+		/* cross product */
+
+	};
+
+	template<class T>
+	struct vec4 : public vector<4, T>
+	{
+		float& x = data[0];
+		float& y = data[1];
+		float& z = data[2];
+		float& w = data[3];
+
+		vec4() : vector<4, T>() {}
+		vec4(T _x, T _y, T _z, T _w) {
+			data[0] = _x;
+			data[1] = _y;
+			data[2] = _z;
+			data[3] = _w;
+		}
+
+		vec4(const T& value) : vector<4, T>(value) {}
+		vec4(const std::initializer_list<T> args) : vector<4, T>(args) {}
+	};
+		
+	typedef vec2<float> vector2;
+
 };
