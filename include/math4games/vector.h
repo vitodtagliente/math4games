@@ -47,6 +47,18 @@ namespace math4games
 			return sqrt(result);
 		}
 
+		static T magnitude(const vector<n, T>& v) {
+			return v.magnitude();
+		}
+
+		T distance(const vector<n, T>& other) const {
+			return (*this - other).magnitude();
+		}
+
+		static T distance(const vector<n, T>& v, const vector<n, T>& w) {
+			return (v - w).magnitude();
+		}
+
 		T dot(const vector<n, T>& other) const {
 			return (*this)*other;
 		}
@@ -173,49 +185,57 @@ namespace math4games
 		return w;
 	}
 
-	template<class T>
-	struct vec2 : public vector<2, T>
+	template<typename T>
+	struct tvector2 : public vector<2, T>
 	{
 		float& x = data[0];
 		float& y = data[1];
 
-		vec2() : vector<2, T>() {}
-		vec2(T _x, T _y) {
+		tvector2() : vector<2, T>() {}
+		tvector2(T _x, T _y) {
 			data[0] = _x;
 			data[1] = _y;
 		}
 
-		vec2(const T& value) : vector<2, T>(value) {}
-		vec2(const std::initializer_list<T> args) : vector<2, T>(args) {}
+		tvector2(const T& value) : vector<2, T>(value) {}
+		tvector2(const std::initializer_list<T> args) : vector<2, T>(args) {}
+
+		static const vector<2, T> zero;
+		static const vector<2, T> up;
+		static const vector<2, T> right;
 	};
+
+	template<typename T> const vector<2, T> tvector2<T>::zero = tvector2<T>(0.0, 0.0);
+	template<typename T> const vector<2, T> tvector2<T>::up = tvector2<T>(0.0, 1.0);
+	template<typename T> const vector<2, T> tvector2<T>::right = tvector2<T>(1.0, 0.0);
 	
-	template<class T>
-	struct vec3 : public vector<3, T>
+	template<typename T>
+	struct tvector3 : public vector<3, T>
 	{
 		float& x = data[0];
 		float& y = data[1];
 		float& z = data[2];
 		
-		vec3() : vector<3, T>() {}
-		vec3(T _x, T _y, T _z) {
+		tvector3() : vector<3, T>() {}
+		tvector3(T _x, T _y, T _z) {
 			data[0] = _x;
 			data[1] = _y;
 			data[2] = _z;
 		}
 
-		vec3(const T& value) : vector<3, T>(value) {}
-		vec3(const std::initializer_list<T> args) : vector<3, T>(args) {}
+		tvector3(const T& value) : vector<3, T>(value) {}
+		tvector3(const std::initializer_list<T> args) : vector<3, T>(args) {}
 
 		/* cross product */
-		vec3 cross(const vec3 v) const {
-			return vec3(
+		tvector3 cross(const tvector3 v) const {
+			return tvector3(
 				y*v.z - z*v.y,
 				z*v.x - x*v.z,
 				x*v.y - y*v.x
 			);
 		}
 
-		static vec3 cross(const vec3& v, const vec3& w) {
+		static tvector3 cross(const tvector3& v, const tvector3& w) {
 			return tvector3<T>(
 				v.y*w.z - v.z*w.y,
 				v.z*w.x - v.x*w.z,
@@ -224,36 +244,68 @@ namespace math4games
 		}
 
 		/* scalar triple product */
-		float triple(const vec3& v, const vec3& w) const {
+		float triple(const tvector3& v, const tvector3& w) const {
 			return ((*this).cross(v))*w;
 		}
 
 		/* scalar triple product */
-		static float triple(const vec3& v1, const vec3& v2, const vec3<T>& v3) {
+		static float triple(const tvector3& v1, const tvector3& v2, const tvector3<T>& v3) {
 			return (v1.cross(v2))*v3;
 		}
-	};
 
-	template<class T>
-	struct vec4 : public vector<4, T>
+		static vector<3, T> zero;
+		static vector<3, T> up;
+		static vector<3, T> right;
+		static vector<3, T> forward;
+	}; 
+	
+	template<typename T> const vector<3, T> tvector3<T>::zero = tvector3<T>(0.0, 0.0, 0.0);
+	template<typename T> const vector<3, T> tvector3<T>::up = tvector3<T>(0.0, 1.0, 0.0);
+	template<typename T> const vector<3, T> tvector3<T>::right = tvector3<T>(1.0, 0.0, 0.0);
+	template<typename T> const vector<3, T> tvector3<T>::forward = tvector3<T>(0.0, 0.0, -1.0);
+
+	template<typename T>
+	struct tvector4 : public vector<4, T>
 	{
 		float& x = data[0];
 		float& y = data[1];
 		float& z = data[2];
 		float& w = data[3];
 
-		vec4() : vector<4, T>() {}
-		vec4(T _x, T _y, T _z, T _w) {
+		tvector4() : vector<4, T>() {}
+		tvector4(T _x, T _y, T _z, T _w) {
 			data[0] = _x;
 			data[1] = _y;
 			data[2] = _z;
 			data[3] = _w;
 		}
 
-		vec4(const T& value) : vector<4, T>(value) {}
-		vec4(const std::initializer_list<T> args) : vector<4, T>(args) {}
-	};
-		
-	typedef vec2<float> vector2;
+		tvector4(const T& value) : vector<4, T>(value) {}
+		tvector4(const std::initializer_list<T> args) : vector<4, T>(args) {}
 
+		static vector<4, T> zero;
+	};
+
+	template<typename T> const vector<4, T> tvector4<T>::zero = tvector4<T>(0.0, 0.0, 0.0, 0.0);
+		
+	typedef tvector2<float> vector2;
+	typedef tvector3<float> vector3;
+	typedef tvector4<float> vector4;
+	typedef vector2 vec2;
+	typedef vector3 vec3;
+	typedef vector4 vec4;
+
+	typedef tvector2<double> dvector2;
+	typedef tvector3<double> dvector3;
+	typedef tvector4<double> dvector4;
+	typedef dvector2 dvec2;
+	typedef dvector3 dvec3;
+	typedef dvector4 dvec4;
+
+	typedef tvector2<int> ivector2;
+	typedef tvector3<int> ivector3;
+	typedef tvector4<int> ivector4;
+	typedef ivector2 ivec2;
+	typedef ivector3 ivec3;
+	typedef ivector4 ivec4;
 };
