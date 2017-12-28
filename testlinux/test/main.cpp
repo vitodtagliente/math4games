@@ -77,6 +77,8 @@ int main(int argc, char **argv) {
 	log(vector2::up);
 	log(vector2::up + vec2::right);
 	cout << vector2::distance(vec2::up, vec2::right) << endl;
+	vector2 t = vector2::up;
+	t = w + v;
 
 	cout << endl << endl << "#### MATRIX ####" << endl << endl;
 
@@ -88,6 +90,17 @@ int main(int argc, char **argv) {
 	log(n);
 	log(n + m);
 	log(n * 2);
+	matrix2 h{ {2,3,4,5} };
+	log(h);
+	log(h.transpose());
+	cout << h.determinant() << endl;
+	log(matrix2::identity);
+	bool invertible;
+	matrix2 inverse = h.inverse(invertible);
+	log(h);
+	if (invertible) cout << "Invertible: " << endl;
+	log(inverse);
+
 
 	timer.stop();
 	cout << endl << "execution time: " << timer << " secs" << '\n';
