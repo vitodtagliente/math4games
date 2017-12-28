@@ -195,6 +195,36 @@ namespace math4games
 		}
 	};
 
+	/* matrix x matrix operation */
+	template<std::size_t n, std::size_t m, std::size_t o, typename T>
+	matrix<n, o, T> operator* (const matrix<n, m, T>& m1, const matrix<m, o, T>& m2) {
+		matrix<n, o, T> result;
+		for (int j = 0; j < n; j++) {
+			for (int y = 0; y < o; y++) {
+				T value{};
+				for (int i = 0; i < n; i++) {
+					value += m1.data[j][i] * m2.data[i][y];
+				}
+				result.data[j][y] = value;
+			}
+		}
+		return result;
+	}
+
+	/* matrix x column vector operation */
+	template<std::size_t n, std::size_t m, typename T>
+	vector<n, T> operator* (const matrix<n, m, T>& M, const vector<m, T>& v) {
+		vector<n, T> result;
+		for (int j = 0; j < n; j++) {
+			T value{};
+			for (int i = 0; i < m; i++) {
+				value += M.data[j][i] * v.data[i];
+			}
+			result.data[j] = value;
+		}
+		return result;
+	}
+
 	template<typename T>
 	struct tmatrix2 : public matrix<2, 2, T>
 	{
@@ -344,21 +374,21 @@ namespace math4games
 	typedef tmatrix2<float> matrix2;
 	typedef tmatrix3<float> matrix3;
 	typedef tmatrix4<float> matrix4;
-	typedef matrix2 m2;
-	typedef matrix3 m3;
-	typedef matrix4 m4;
+	typedef matrix2 mat2;
+	typedef matrix3 mat3;
+	typedef matrix4 mat4;
 
-	typedef tmatrix2<double> dmatrix2;
-	typedef tmatrix3<double> dmatrix3;
-	typedef tmatrix4<double> dmatrix4;
-	typedef dmatrix2 dm2;
-	typedef dmatrix3 dm3;
-	typedef dmatrix4 dm4;
+	typedef tmatrix2<double> matrix2d;
+	typedef tmatrix3<double> matrix3d;
+	typedef tmatrix4<double> matrix4d;
+	typedef matrix2d mat2d;
+	typedef matrix3d mat3d;
+	typedef matrix4d mat4d;
 
-	typedef tmatrix2<int> imatrix2;
-	typedef tmatrix3<int> imatrix3;
-	typedef tmatrix4<int> imatrix4;
-	typedef imatrix2 im2;
-	typedef imatrix3 im3;
-	typedef imatrix4 im4;
+	typedef tmatrix2<int> matrix2i;
+	typedef tmatrix3<int> matrix3i;
+	typedef tmatrix4<int> matrix4i;
+	typedef matrix2i mat2i;
+	typedef matrix3i mat3i;
+	typedef matrix4i mat4i;
 };

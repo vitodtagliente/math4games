@@ -109,6 +109,13 @@ int main(int argc, char **argv) {
 	log(m3);
 	log(m3.inverse(invertible));
 
+	matrix2 u(1, 2, 4, 0);
+	matrix2 u1(1, 2, 0, 1);
+	vector2 vu(1, 0);
+	log(u*vu);
+	log(u*u1);
+	matrix2 mul = u*u1;
+
 	timer.stop();
 	cout << endl << "execution time: " << timer << " secs" << '\n';
 

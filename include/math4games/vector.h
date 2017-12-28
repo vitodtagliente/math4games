@@ -328,17 +328,17 @@ namespace math4games
 	typedef vector3 vec3;
 	typedef vector4 vec4;
 
-	typedef tvector2<double> dvector2;
-	typedef tvector3<double> dvector3;
-	typedef tvector4<double> dvector4;
-	typedef dvector2 dvec2;
-	typedef dvector3 dvec3;
-	typedef dvector4 dvec4;
+	typedef tvector2<double> vector2d;
+	typedef tvector3<double> vector3d;
+	typedef tvector4<double> vector4d;
+	typedef vector2d vec2d;
+	typedef vector3d vec3d;
+	typedef vector4d vec4d;
 
-	typedef tvector2<int> ivector2;
-	typedef tvector3<int> ivector3;
-	typedef tvector4<int> ivector4;
-	typedef ivector2 ivec2;
-	typedef ivector3 ivec3;
-	typedef ivector4 ivec4;
+	typedef tvector2<int> vector2i;
+	typedef tvector3<int> vector3i;
+	typedef tvector4<int> vector4i;
+	typedef vector2i vec2i;
+	typedef vector3i vec3i;
+	typedef vector4i vec4i;
 };
