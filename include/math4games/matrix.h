@@ -55,7 +55,7 @@ namespace math4games
 			return data[j][i];
 		}
 
-		T determinant() {
+		virtual T determinant() {
 			return T{}; // TODO for n x m matrix
 		}
 
@@ -91,7 +91,7 @@ namespace math4games
 			return M.inverse(invertible);
 		}
 
-		matrix<n, m, T> adjugate() {
+		virtual matrix<n, m, T> adjugate() {
 			return *this; // TODO for n x m matrix
 		}
 
@@ -215,11 +215,11 @@ namespace math4games
 		tmatrix2(const T& value) : matrix<2, 2, T>(value) {}
 		tmatrix2(const std::initializer_list<T> args) : matrix<2, 2, T>(args) {}
 		
-		T determinant() {
+		T determinant() override {
 			return data[0][0] * data[1][1] - (data[0][1] * data[1][0]);
 		}
 		
-		tmatrix2 adjugate() {
+		matrix<2, 2, T> adjugate() override {
 			return tmatrix2(
 				data[1][1], -data[0][1],
 				-data[1][0], data[0][0]
@@ -262,13 +262,13 @@ namespace math4games
 		tmatrix3(const T& value) : matrix<3, 3, T>(value) {}
 		tmatrix3(const std::initializer_list<T> args) : matrix<3, 3, T>(args) {}
 
-		T determinant() {
+		T determinant() override {
 			return (data[0][0] * data[1][1] * data[2][2]) -
 				(data[0][1] * data[1][2] * data[2][0]) -
 				(data[0][2] * data[1][0] * data[2][1]);
 		}
 
-		tmatrix3 adjugate() {
+		matrix<3, 3, T> adjugate() override {
 			return tmatrix3(); // TODO
 		}
 
@@ -314,11 +314,11 @@ namespace math4games
 		tmatrix4(const T& value) : matrix<4, 4, T>(value) {}
 		tmatrix4(const std::initializer_list<T> args) : matrix<4, 4, T>(args) {}
 
-		T determinant() {
+		T determinant() override {
 			return T{}; // TODO
 		}
 
-		tmatrix4 adjugate() {
+		matrix<4, 4, T> adjugate() override {
 			return tmatrix4(); // TODO
 		}
 
