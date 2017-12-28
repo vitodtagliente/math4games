@@ -196,9 +196,18 @@ namespace math4games
 			data[0] = _x;
 			data[1] = _y;
 		}
-
+		tvector2(const vector<2, T>& v) {
+			data[0] = v[0];
+			data[1] = v[1];
+		}
 		tvector2(const T& value) : vector<2, T>(value) {}
 		tvector2(const std::initializer_list<T> args) : vector<2, T>(args) {}
+
+		tvector2<T>& operator= (const vector<2, T>& v) {
+			data[0] = v[0];
+			data[1] = v[1];
+			return *this;
+		}
 
 		static const vector<2, T> zero;
 		static const vector<2, T> up;
@@ -222,7 +231,11 @@ namespace math4games
 			data[1] = _y;
 			data[2] = _z;
 		}
-
+		tvector3(const vector<3, T>& v) {
+			data[0] = v[0];
+			data[1] = v[1];
+			data[2] = v[2];
+		}
 		tvector3(const T& value) : vector<3, T>(value) {}
 		tvector3(const std::initializer_list<T> args) : vector<3, T>(args) {}
 
@@ -253,10 +266,17 @@ namespace math4games
 			return (v1.cross(v2))*v3;
 		}
 
-		static vector<3, T> zero;
-		static vector<3, T> up;
-		static vector<3, T> right;
-		static vector<3, T> forward;
+		tvector3<T>& operator= (const vector<3, T>& v) {
+			data[0] = v[0];
+			data[1] = v[1];
+			data[2] = v[2];
+			return *this;
+		}
+
+		static const vector<3, T> zero;
+		static const vector<3, T> up;
+		static const vector<3, T> right;
+		static const vector<3, T> forward;
 	}; 
 	
 	template<typename T> const vector<3, T> tvector3<T>::zero = tvector3<T>(0.0, 0.0, 0.0);
@@ -279,11 +299,24 @@ namespace math4games
 			data[2] = _z;
 			data[3] = _w;
 		}
-
+		tvector4(const vector<4, T>& v) {
+			data[0] = v[0];
+			data[1] = v[1];
+			data[2] = v[2];
+			data[3] = v[3];
+		}
 		tvector4(const T& value) : vector<4, T>(value) {}
 		tvector4(const std::initializer_list<T> args) : vector<4, T>(args) {}
 
-		static vector<4, T> zero;
+		tvector4<T>& operator= (const vector<4, T>& v) {
+			data[0] = v[0];
+			data[1] = v[1];
+			data[2] = v[2];
+			data[3] = v[3];
+			return *this;
+		}
+
+		static const vector<4, T> zero;
 	};
 
 	template<typename T> const vector<4, T> tvector4<T>::zero = tvector4<T>(0.0, 0.0, 0.0, 0.0);
