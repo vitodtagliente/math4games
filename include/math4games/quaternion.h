@@ -2,7 +2,8 @@
 
 namespace math4games
 {
-	class transform2
+	template<class T>
+	struct quaternion
 	{
 
 	};

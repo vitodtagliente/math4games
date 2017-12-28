@@ -351,8 +351,14 @@ namespace math4games
 	typedef tmatrix2<double> dmatrix2;
 	typedef tmatrix3<double> dmatrix3;
 	typedef tmatrix4<double> dmatrix4;
+	typedef dmatrix2 dm2;
+	typedef dmatrix3 dm3;
+	typedef dmatrix4 dm4;
 
 	typedef tmatrix2<int> imatrix2;
 	typedef tmatrix3<int> imatrix3;
 	typedef tmatrix4<int> imatrix4;
+	typedef imatrix2 im2;
+	typedef imatrix3 im3;
+	typedef imatrix4 im4;
 };
