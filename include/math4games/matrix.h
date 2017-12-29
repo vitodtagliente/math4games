@@ -55,12 +55,46 @@ namespace math4games
 			return data[j][i];
 		}
 
-		virtual T determinant() {
-			return T{}; // TODO for n x m matrix
+		T determinant() {
+			if (n != m)
+				return T{};
+
+			if (n == 2)
+				return data[0][0] * data[1][1] - (data[0][1] * data[1][0]);
+			else if (n == 3) {
+				/* Sarrus law */
+				return (data[0][0] * data[1][1] * data[2][2]) -
+					(data[0][1] * data[1][2] * data[2][0]) -
+					(data[0][2] * data[1][0] * data[2][1]);
+			}
+
+			/* Laplace law */
+			int j = 0;
+			T result{};
+			/*
+			for (int i = 0; i < m; i++) {
+				T minorDeterminant = minor(i, j).determinant();
+				if (i + j % 2 != 0)
+					result -= minorDeterminant;
+				else result += minorDeterminant;
+			}
+			*/
+			return result;
 		}
 
 		static T determinant(matrix<n, m, T> M) {
 			return M.determinant();
+		}
+
+		matrix<n - 1, m - 1, T> minor(int x, int y) {
+			matrix<n - 1, m - 1, T> result;
+			for (int j = 0; j < n; j++) {
+				for (int i = 0; i < m; i++) {
+					if (i != x && j != y)
+						result.data[(j > y) ? j - 1 : j][(i > x) ? i - 1 : i] = data[j][i];
+				}
+			}
+			return result;
 		}
 
 		matrix<m, n, T> transpose() {
@@ -91,8 +125,16 @@ namespace math4games
 			return M.inverse(invertible);
 		}
 
-		virtual matrix<n, m, T> adjugate() {
-			return *this; // TODO for n x m matrix
+		matrix<n, m, T> adjugate() {
+			matrix<n, m, T> result;
+			for (int j = 0; j < n; j++) {
+				for (int i = 0; i < m; i++) {
+					result.data[j][i] = minor(i, j).determinant();
+					if (i + j % 2 != 0)
+						result.data[j][i] = -result.data[j][i];
+				}
+			}
+			return result;
 		}
 
 		static matrix<n, m, T> adjugate(const matrix<n, m, T>& M) {
@@ -245,17 +287,6 @@ namespace math4games
 		tmatrix2(const T& value) : matrix<2, 2, T>(value) {}
 		tmatrix2(const std::initializer_list<T> args) : matrix<2, 2, T>(args) {}
 		
-		T determinant() override {
-			return data[0][0] * data[1][1] - (data[0][1] * data[1][0]);
-		}
-		
-		matrix<2, 2, T> adjugate() override {
-			return tmatrix2(
-				data[1][1], -data[0][1],
-				-data[1][0], data[0][0]
-			);
-		}
-
 		tmatrix2<T>& operator= (const matrix<2, 2, T>& m) {
 			for (int i = 0; i < rows; i++)
 				for (int j = 0; j < columns; j++)
@@ -291,17 +322,7 @@ namespace math4games
 		}
 		tmatrix3(const T& value) : matrix<3, 3, T>(value) {}
 		tmatrix3(const std::initializer_list<T> args) : matrix<3, 3, T>(args) {}
-
-		T determinant() override {
-			return (data[0][0] * data[1][1] * data[2][2]) -
-				(data[0][1] * data[1][2] * data[2][0]) -
-				(data[0][2] * data[1][0] * data[2][1]);
-		}
-
-		matrix<3, 3, T> adjugate() override {
-			return tmatrix3(); // TODO
-		}
-
+				
 		tmatrix3<T>& operator= (const matrix<3, 3, T>& m) {
 			for (int i = 0; i < rows; i++)
 				for (int j = 0; j < columns; j++)
@@ -343,15 +364,7 @@ namespace math4games
 		}
 		tmatrix4(const T& value) : matrix<4, 4, T>(value) {}
 		tmatrix4(const std::initializer_list<T> args) : matrix<4, 4, T>(args) {}
-
-		T determinant() override {
-			return T{}; // TODO
-		}
-
-		matrix<4, 4, T> adjugate() override {
-			return tmatrix4(); // TODO
-		}
-
+		
 		tmatrix4<T>& operator= (const matrix<4, 4, T>& m) {
 			for (int i = 0; i < rows; i++)
 				for (int j = 0; j < columns; j++)

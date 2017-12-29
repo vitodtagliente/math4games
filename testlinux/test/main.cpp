@@ -116,6 +116,16 @@ int main(int argc, char **argv) {
 	log(u*u1);
 	matrix2 mul = u*u1;
 
+	matrix3 A(
+		1, 1, 2,
+		2, 1, 2,
+		1, -2, 1
+	);
+	log(A);
+	log(A.inverse(invertible));
+	log(A.minor(0, 0));
+	log(A.minor(1, 0));
+
 	timer.stop();
 	cout << endl << "execution time: " << timer << " secs" << '\n';
 
