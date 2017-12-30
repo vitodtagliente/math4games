@@ -94,7 +94,7 @@ int main(int argc, char **argv) {
 	log(m.adjugate());
 	log(m.minor(0, 0));
 	log(m.inverse(invertible));
-
+	
 	timer.stop();
 	cout << endl << "execution time: " << timer << " secs" << '\n';
 
