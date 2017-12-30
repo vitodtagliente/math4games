@@ -1,9 +1,7 @@
 #pragma once
 
-#include <cmath>
 #include <cassert>
 #include <initializer_list>
-#include <array>
 
 #include "vector.h"
 
@@ -35,8 +33,7 @@ namespace math4games
 		matrix(const std::initializer_list<T> args) {
 			assert(args.size() <= m*n);
 			int i = 0, j = 0;
-			for (auto& it : args)
-			{
+			for (auto& it : args) {
 				data[j][i++] = it;
 				if (i >= n) {
 					++j;
@@ -56,10 +53,12 @@ namespace math4games
 		}
 
 		T determinant() {
-			if (n != m)
-				return T{};
+			/* must be square matrix */
+			assert(n == m && n > 0 && m > 0);
 
-			if (n == 2)
+			if (n == 1)
+				return data[0][0];
+			else if (n == 2)
 				return data[0][0] * data[1][1] - (data[0][1] * data[1][0]);
 			else if (n == 3) {
 				/* Sarrus law */
@@ -67,25 +66,23 @@ namespace math4games
 					(data[0][1] * data[1][2] * data[2][0]) -
 					(data[0][2] * data[1][0] * data[2][1]);
 			}
-
-			/* Laplace law */
-			int j = 0;
-			T result{};
-			/*
-			for (int i = 0; i < m; i++) {
-				T minorDeterminant = minor(i, j).determinant();
-				if (i + j % 2 != 0)
-					result -= minorDeterminant;
-				else result += minorDeterminant;
+			else {
+				/* Laplace law */
+				int j = 0;
+				T result{};
+				for (int i = 0; i < m; i++) {
+					assert(n > 0 && m > 0);
+					matrix<n - 1, m - 1, T> currentMinor = minor(i, j);
+					/* TODO? fix this compile error
+					if (i + j % 2 != 0)
+					result -= currentMinor.determinant();
+					else result += currentMinor.determinant();
+					*/
+				}
+				return result;
 			}
-			*/
-			return result;
 		}
-
-		static T determinant(matrix<n, m, T> M) {
-			return M.determinant();
-		}
-
+		
 		matrix<n - 1, m - 1, T> minor(int x, int y) {
 			matrix<n - 1, m - 1, T> result;
 			for (int j = 0; j < n; j++) {
@@ -107,10 +104,6 @@ namespace math4games
 			return MT;
 		}
 
-		static matrix<m, n, T> transpose(const matrix<n, m, T>& M) {
-			return M.transpose();
-		}
-
 		matrix<n, m, T> inverse(bool& invertible) {
 			invertible = false;
 			float d = determinant();
@@ -121,24 +114,17 @@ namespace math4games
 			return *this;
 		}
 
-		static matrix<n, m, T> inverse(const matrix<n, m, T>& M, bool& invertible) {
-			return M.inverse(invertible);
-		}
-
 		matrix<n, m, T> adjugate() {
 			matrix<n, m, T> result;
 			for (int j = 0; j < n; j++) {
 				for (int i = 0; i < m; i++) {
-					result.data[j][i] = minor(i, j).determinant();
+					matrix<n - 1, m - 1, T> currentMinor = minor(i, j);
+					result.data[j][i] = currentMinor.determinant();
 					if (i + j % 2 != 0)
 						result.data[j][i] = -result.data[j][i];
 				}
 			}
 			return result;
-		}
-
-		static matrix<n, m, T> adjugate(const matrix<n, m, T>& M) {
-			return M.adjugate();
 		}
 
 		/* Operators overloading */

@@ -47,10 +47,6 @@ namespace math4games
 			return sqrt(result);
 		}
 
-		static T magnitude(const vector<n, T>& v) {
-			return v.magnitude();
-		}
-
 		T distance(const vector<n, T>& other) const {
 			return (*this - other).magnitude();
 		}
@@ -74,19 +70,11 @@ namespace math4games
 		vector<n, T> project(const vector<n, T>& v) {
 			return v* ((*this*v) / (v*v));
 		}
-
-		static vector<n, T> project(const vector<n, T>& v, const vector<n, T>& w) {
-			return w* ((v*w) / (v*w));
-		}
-
+		
 		vector<n, T> reject(const vector<n, T>& v) {
 			return (*this - v)* ((*this*v) / (v*v));
 		}
-
-		static vector<n, T> reject(const vector<n, T>& v, const vector<n, T>& w) {
-			return (v - w)* ((v*w) / (v*w));
-		}
-
+		
 		/* Operators overloading */
 
 		vector<n, T>& operator= (const vector<n, T>& other) {
@@ -172,7 +160,7 @@ namespace math4games
 		T operator*(const vector<n, T>& v) const {
 			T dot{};
 			for (std::size_t i = 0; i < n; i++)
-				dot += data[i] * w[i];
+				dot += data[i] * v[i];
 			return dot;
 		}
 	};

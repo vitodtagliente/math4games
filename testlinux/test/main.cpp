@@ -18,7 +18,7 @@ void log(const matrix<n, m, T>& matrix) {
 	cout << "Matrix " << matrix.rows << "x" << matrix.columns << ": " << endl;
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++)
-			cout << matrix(j, i) << " ";
+			cout << matrix(j, i) << "  ";
 		cout << endl;
 	}
 	cout << endl;
@@ -82,49 +82,18 @@ int main(int argc, char **argv) {
 
 	cout << endl << endl << "#### MATRIX ####" << endl << endl;
 
-	matrix2 m;
-	log(m);
-	m(1, 0) = 9;
-	log(m);
-	matrix2 n{ {0,1,0,1} };
-	log(n);
-	log(n + m);
-	log(n * 2);
-	matrix2 h{ {2,3,4,5} };
-	log(h);
-	log(h.transpose());
-	cout << h.determinant() << endl;
-	log(matrix2::identity);
-	bool invertible;
-	matrix2 inverse = h.inverse(invertible);
-	log(h);
-	if (invertible) cout << "Invertible: " << endl;
-	log(inverse);
-	log(matrix4::identity);
-	matrix3 m3(
-		1.f, 2.f, 3.f,
-		4.f, 5.f, 6.f,
-		7.f, 8.f, 9.f
+	bool invertible = false;
+	matrix3 m(
+		1, 3, 3, 
+		1, 4, 3,
+		1, 3, 4		
 	);
-	log(m3);
-	log(m3.inverse(invertible));
-
-	matrix2 u(1, 2, 4, 0);
-	matrix2 u1(1, 2, 0, 1);
-	vector2 vu(1, 0);
-	log(u*vu);
-	log(u*u1);
-	matrix2 mul = u*u1;
-
-	matrix3 A(
-		1, 1, 2,
-		2, 1, 2,
-		1, -2, 1
-	);
-	log(A);
-	log(A.inverse(invertible));
-	log(A.minor(0, 0));
-	log(A.minor(1, 0));
+	log(m);
+	log(m.transpose());
+	log(m.minor(1, 1));
+	log(m.adjugate());
+	log(m.minor(0, 0));
+	log(m.inverse(invertible));
 
 	timer.stop();
 	cout << endl << "execution time: " << timer << " secs" << '\n';
