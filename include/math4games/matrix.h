@@ -1,5 +1,10 @@
 #pragma once
 
+/*
+matrix implementation using row major representation
+credits: Vito Domenico Tagliente
+*/
+
 #include <cassert>
 #include <initializer_list>
 
@@ -8,8 +13,8 @@
 namespace math4games
 {
 	/*
-		n: num of rows
-		m: num of columns
+	n: num of rows
+	m: num of columns
 	*/
 	template<std::size_t n, std::size_t m, class T>
 	struct matrix
@@ -239,10 +244,10 @@ namespace math4games
 		return result;
 	}
 
-	/* matrix x column vector operation */
+	/* matrix x column vec operation */
 	template<std::size_t n, std::size_t m, typename T>
-	vector<n, T> operator* (const matrix<n, m, T>& M, const vector<m, T>& v) {
-		vector<n, T> result;
+	vec<n, T> operator* (const matrix<n, m, T>& M, const vec<m, T>& v) {
+		vec<n, T> result;
 		for (int j = 0; j < n; j++) {
 			T value{};
 			for (int i = 0; i < m; i++) {
@@ -377,17 +382,10 @@ namespace math4games
 	typedef matrix3 mat3;
 	typedef matrix4 mat4;
 
-	typedef tmatrix2<double> matrix2d;
-	typedef tmatrix3<double> matrix3d;
-	typedef tmatrix4<double> matrix4d;
-	typedef matrix2d mat2d;
-	typedef matrix3d mat3d;
-	typedef matrix4d mat4d;
-
-	typedef tmatrix2<int> matrix2i;
-	typedef tmatrix3<int> matrix3i;
-	typedef tmatrix4<int> matrix4i;
-	typedef matrix2i mat2i;
-	typedef matrix3i mat3i;
-	typedef matrix4i mat4i;
+	typedef tmatrix2<double> dmatrix2;
+	typedef tmatrix3<double> dmatrix3;
+	typedef tmatrix4<double> dmatrix4;
+	typedef dmatrix2 dmat2;
+	typedef dmatrix3 dmat3;
+	typedef dmatrix4 dmat4;
 };

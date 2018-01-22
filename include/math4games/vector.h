@@ -1,5 +1,10 @@
 #pragma once
 
+/*
+vector implementation
+credits: Vito Domenico Tagliente
+*/
+
 #include <cmath>
 #include <cassert>
 #include <initializer_list>
@@ -7,21 +12,20 @@
 
 namespace math4games
 {
-	template<std::size_t n, class T>
-	struct vector
+	template<std::size_t n, typename T>
+	struct vec
 	{
 		std::array<T, n> data;
 
-		vector() {
-			for (auto& element : data)
-				element = {};
+		vec() {
+			data.fill(T{});
 		}
 
-		vector(const T& value) {
+		vec(const T& value) {
 			data.fill(value);
 		}
 
-		vector(const std::initializer_list<T> args) {
+		vec(const std::initializer_list<T> args) {
 			assert(args.size() <= n);
 			int i = 0;
 			for (auto begin = args.begin(); begin != args.end(); ++begin) {
@@ -47,117 +51,117 @@ namespace math4games
 			return sqrt(result);
 		}
 
-		T distance(const vector<n, T>& other) const {
+		T distance(const vec<n, T>& other) const {
 			return (*this - other).magnitude();
 		}
 
-		static T distance(const vector<n, T>& v, const vector<n, T>& w) {
+		static T distance(const vec<n, T>& v, const vec<n, T>& w) {
 			return (v - w).magnitude();
 		}
 
-		T dot(const vector<n, T>& other) const {
+		T dot(const vec<n, T>& other) const {
 			return (*this)*other;
 		}
 
-		static T dot(const vector<n, T>& v, const vector<n, T>& w) {
+		static T dot(const vec<n, T>& v, const vec<n, T>& w) {
 			return v*w;
 		}
 
-		vector<n, T> normalize() {
+		vec<n, T> normalize() {
 			return (*this *= (1.0f / magnitude()));
 		}
 
-		vector<n, T> project(const vector<n, T>& v) {
+		vec<n, T> project(const vec<n, T>& v) {
 			return v* ((*this*v) / (v*v));
 		}
 		
-		vector<n, T> reject(const vector<n, T>& v) {
+		vec<n, T> reject(const vec<n, T>& v) {
 			return (*this - v)* ((*this*v) / (v*v));
 		}
 		
 		/* Operators overloading */
 
-		vector<n, T>& operator= (const vector<n, T>& other) {
-			// check for self-assignment
+		vec<n, T>& operator= (const vec<n, T>& other) {
+			/* check for self-assignment */
 			if (this == &other)
 				return *this;
 
-			for (std::size_t i = 0; i < n; i++)
-				data[i] = other[i];
+			/* copy */
+			data = other.data;
 			return *this;
 		}
 
-		bool operator== (const vector<n, T>& other) const {
+		bool operator== (const vec<n, T>& other) const {
 			return (*this).data == other.data;
 		}
 
-		bool operator!= (const vector<n, T>& other) const {
+		bool operator!= (const vec<n, T>& other) const {
 			return !(*this == other);
 		}
 
-		vector<n, T>& operator+= (const vector<n, T>& other) {
+		vec<n, T>& operator+= (const vec<n, T>& other) {
 			for (std::size_t i = 0; i < n; i++)
 				data[i] += other[i];
 			return *this;
 		}
 
-		vector<n, T>& operator-= (const vector<n, T>& other) {
+		vec<n, T>& operator-= (const vec<n, T>& other) {
 			for (std::size_t i = 0; i < n; i++)
 				data[i] -= other[i];
 			return *this;
 		}
 
-		vector<n, T>& operator*= (const T s) {
+		vec<n, T>& operator*= (const T s) {
 			for (std::size_t i = 0; i < n; i++)
 				data[i] *= s;
 			return *this;
 		}
 
-		vector<n, T>& operator/= (const T s) {
+		vec<n, T>& operator/= (const T s) {
 			T f = 1.0f / s;
 			for (std::size_t i = 0; i < n; i++)
 				data[i] *= f;
 			return *this;
 		}
 
-		vector<n, T> operator- () const {
-			vector<n, T> v;
+		vec<n, T> operator- () const {
+			vec<n, T> v;
 			for (std::size_t i = 0; i < n; i++)
 				v[i] = -data[i];
 			return v;
 		}
 
-		vector<n, T> operator+ (const vector<n, T>& w) const {
-			vector<n, T> v;
+		vec<n, T> operator+ (const vec<n, T>& w) const {
+			vec<n, T> v;
 			for (std::size_t i = 0; i < n; i++)
 				v[i] = data[i] + w[i];
 			return v;
 		}
 
-		vector<n, T> operator- (const vector<n, T>& w) const {
-			vector<n, T> v;
+		vec<n, T> operator- (const vec<n, T>& w) const {
+			vec<n, T> v;
 			for (std::size_t i = 0; i < n; i++)
 				v[i] = data[i] - w[i];
 			return v;
 		}
 
-		vector<n, T> operator* (const T s) const {
-			vector<n, T> v;
+		vec<n, T> operator* (const T s) const {
+			vec<n, T> v;
 			for (std::size_t i = 0; i < n; i++)
 				v[i] = data[i] * s;
 			return v;
 		}
 
-		vector<n, T> operator/ (const T s) const {
+		vec<n, T> operator/ (const T s) const {
 			T f = 1.0f / s;
-			vector<n, T> v;
+			vec<n, T> v;
 			for (std::size_t i = 0; i < n; i++)
 				v[i] = data[i] * f;
 			return v;
 		}
 
 		/* dot product */
-		T operator*(const vector<n, T>& v) const {
+		T operator*(const vec<n, T>& v) const {
 			T dot{};
 			for (std::size_t i = 0; i < n; i++)
 				dot += data[i] * v[i];
@@ -166,78 +170,80 @@ namespace math4games
 	};
 
 	template<std::size_t n, class T>
-	inline vector<n, T> operator* (const T s, const vector<n, T>& v) {
-		vector<n, T> w;
+	inline vec<n, T> operator* (const T s, const vec<n, T>& v) {
+		vec<n, T> w;
 		for (std::size_t i = 0; i < n; i++)
 			w[i] = v[i] * s;
 		return w;
 	}
 
 	template<typename T>
-	struct tvector2 : public vector<2, T>
+	struct tvec2 : public vec<2, T>
 	{
 		float& x = data[0];
 		float& y = data[1];
 
-		tvector2() : vector<2, T>() {}
-		tvector2(T _x, T _y) {
+		tvec2() : vec<2, T>() {}
+		tvec2(T _x, T _y) {
 			data[0] = _x;
 			data[1] = _y;
 		}
-		tvector2(const vector<2, T>& v) {
-			data[0] = v[0];
-			data[1] = v[1];
+		tvec2(const vec<2, T>& v) {
+			data = v.data;
 		}
-		tvector2(const T& value) : vector<2, T>(value) {}
-		tvector2(const std::initializer_list<T> args) : vector<2, T>(args) {}
+		tvec2(const T& value) : vec<2, T>(value) {}
+		tvec2(const std::initializer_list<T> args) : vec<2, T>(args) {}
 
-		tvector2<T>& operator= (const vector<2, T>& v) {
-			data[0] = v[0];
-			data[1] = v[1];
+		tvec2<T>& operator= (const vec<2, T>& v) {
+			data = v.data;
 			return *this;
 		}
 
-		static const vector<2, T> zero;
-		static const vector<2, T> up;
-		static const vector<2, T> right;
+		static const vec<2, T> zero;
+		static const vec<2, T> up;
+		static const vec<2, T> right;
 	};
 
-	template<typename T> const vector<2, T> tvector2<T>::zero = tvector2<T>(0.0, 0.0);
-	template<typename T> const vector<2, T> tvector2<T>::up = tvector2<T>(0.0, 1.0);
-	template<typename T> const vector<2, T> tvector2<T>::right = tvector2<T>(1.0, 0.0);
+	template<typename T> const vec<2, T> tvec2<T>::zero = tvec2<T>(0.0, 0.0);
+	template<typename T> const vec<2, T> tvec2<T>::up = tvec2<T>(0.0, 1.0);
+	template<typename T> const vec<2, T> tvec2<T>::right = tvec2<T>(1.0, 0.0);
 	
 	template<typename T>
-	struct tvector3 : public vector<3, T>
+	struct tvec3 : public vec<3, T>
 	{
 		float& x = data[0];
 		float& y = data[1];
 		float& z = data[2];
 		
-		tvector3() : vector<3, T>() {}
-		tvector3(T _x, T _y, T _z) {
+		tvec3() : vec<3, T>() {}
+		tvec3(T _x, T _y, T _z) {
 			data[0] = _x;
 			data[1] = _y;
 			data[2] = _z;
 		}
-		tvector3(const vector<3, T>& v) {
+		tvec3(const vec<3, T>& v) {
+			data = v.data;
+		}
+		tvec3(const T& value) : vec<3, T>(value) {}
+		tvec3(const std::initializer_list<T> args) : vec<3, T>(args) {}
+
+		tvec3(const vec<2, T>& v) {
 			data[0] = v[0];
 			data[1] = v[1];
-			data[2] = v[2];
+			data[2] = T{};
 		}
-		tvector3(const T& value) : vector<3, T>(value) {}
-		tvector3(const std::initializer_list<T> args) : vector<3, T>(args) {}
 
 		/* cross product */
-		tvector3 cross(const tvector3 v) const {
-			return tvector3(
+		tvec3 cross(const tvec3 v) const {
+			return tvec3(
 				y*v.z - z*v.y,
 				z*v.x - x*v.z,
 				x*v.y - y*v.x
 			);
 		}
 
-		static tvector3 cross(const tvector3& v, const tvector3& w) {
-			return tvector3<T>(
+		static tvec3 cross(const tvec3& v, const tvec3& w) {
+			return tvec3<T>(
 				v.y*w.z - v.z*w.y,
 				v.z*w.x - v.x*w.z,
 				v.x*w.y - v.y*w.x
@@ -245,88 +251,114 @@ namespace math4games
 		}
 
 		/* scalar triple product */
-		float triple(const tvector3& v, const tvector3& w) const {
+		float triple(const tvec3& v, const tvec3& w) const {
 			return ((*this).cross(v))*w;
 		}
 
 		/* scalar triple product */
-		static float triple(const tvector3& v1, const tvector3& v2, const tvector3<T>& v3) {
+		static float triple(const tvec3& v1, const tvec3& v2, const tvec3<T>& v3) {
 			return (v1.cross(v2))*v3;
 		}
 
-		tvector3<T>& operator= (const vector<3, T>& v) {
-			data[0] = v[0];
-			data[1] = v[1];
-			data[2] = v[2];
+		tvec3<T>& operator= (const vec<3, T>& v) {
+			data = v.data;
 			return *this;
 		}
 
-		static const vector<3, T> zero;
-		static const vector<3, T> up;
-		static const vector<3, T> right;
-		static const vector<3, T> forward;
+		static const vec<3, T> zero;
+		static const vec<3, T> up;
+		static const vec<3, T> right;
+		static const vec<3, T> forward;
 	}; 
 	
-	template<typename T> const vector<3, T> tvector3<T>::zero = tvector3<T>(0.0, 0.0, 0.0);
-	template<typename T> const vector<3, T> tvector3<T>::up = tvector3<T>(0.0, 1.0, 0.0);
-	template<typename T> const vector<3, T> tvector3<T>::right = tvector3<T>(1.0, 0.0, 0.0);
-	template<typename T> const vector<3, T> tvector3<T>::forward = tvector3<T>(0.0, 0.0, -1.0);
+	template<typename T> const vec<3, T> tvec3<T>::zero = tvec3<T>(0.0, 0.0, 0.0);
+	template<typename T> const vec<3, T> tvec3<T>::up = tvec3<T>(0.0, 1.0, 0.0);
+	template<typename T> const vec<3, T> tvec3<T>::right = tvec3<T>(1.0, 0.0, 0.0);
+	template<typename T> const vec<3, T> tvec3<T>::forward = tvec3<T>(0.0, 0.0, -1.0);
 
 	template<typename T>
-	struct tvector4 : public vector<4, T>
+	struct tvec4 : public vec<4, T>
 	{
 		float& x = data[0];
 		float& y = data[1];
 		float& z = data[2];
 		float& w = data[3];
 
-		tvector4() : vector<4, T>() {}
-		tvector4(T _x, T _y, T _z, T _w) {
+		tvec4() : vec<4, T>() {}
+		tvec4(T _x, T _y, T _z, T _w) {
 			data[0] = _x;
 			data[1] = _y;
 			data[2] = _z;
 			data[3] = _w;
 		}
-		tvector4(const vector<4, T>& v) {
-			data[0] = v[0];
-			data[1] = v[1];
-			data[2] = v[2];
-			data[3] = v[3];
+		tvec4(const vec<4, T>& v) {
+			data = v.data;
 		}
-		tvector4(const T& value) : vector<4, T>(value) {}
-		tvector4(const std::initializer_list<T> args) : vector<4, T>(args) {}
+		tvec4(const T& value) : vec<4, T>(value) {}
+		tvec4(const std::initializer_list<T> args) : vec<4, T>(args) {}
 
-		tvector4<T>& operator= (const vector<4, T>& v) {
+		tvec4(const vec<2, T>& v) {
+			data[0] = v[0];
+			data[1] = v[1];
+			data[2] = T{};
+			data[3] = T{};
+		}
+		tvec4(const vec<3, T>& v) {
 			data[0] = v[0];
 			data[1] = v[1];
 			data[2] = v[2];
-			data[3] = v[3];
+			data[3] = T{};
+		}
+
+		tvec4<T>& operator= (const vec<4, T>& v) {
+			data = v.data;
 			return *this;
 		}
 
-		static const vector<4, T> zero;
+		static const vec<4, T> zero;
 	};
 
-	template<typename T> const vector<4, T> tvector4<T>::zero = tvector4<T>(0.0, 0.0, 0.0, 0.0);
-		
-	typedef tvector2<float> vector2;
-	typedef tvector3<float> vector3;
-	typedef tvector4<float> vector4;
-	typedef vector2 vec2;
-	typedef vector3 vec3;
-	typedef vector4 vec4;
+	template<typename T> const vec<4, T> tvec4<T>::zero = tvec4<T>(0.0, 0.0, 0.0, 0.0);
 
-	typedef tvector2<double> vector2d;
-	typedef tvector3<double> vector3d;
-	typedef tvector4<double> vector4d;
-	typedef vector2d vec2d;
-	typedef vector3d vec3d;
-	typedef vector4d vec4d;
+	typedef tvec2<float> vec2;
+	typedef tvec3<float> vec3;
+	typedef tvec4<float> vec4;
+	typedef vec2 vector2;
+	typedef vec3 vector3;
+	typedef vec4 vector4;
 
-	typedef tvector2<int> vector2i;
-	typedef tvector3<int> vector3i;
-	typedef tvector4<int> vector4i;
-	typedef vector2i vec2i;
-	typedef vector3i vec3i;
-	typedef vector4i vec4i;
+	typedef vec2 fvec2;
+	typedef vec3 fvec3;
+	typedef vec4 fvec4;
+	typedef vector2 fvector2;
+	typedef vector3 fvector3;
+	typedef vector4 fvector4;
+
+	typedef tvec2<double> dvec2;
+	typedef tvec3<double> dvec3;
+	typedef tvec4<double> dvec4;
+	typedef dvec2 dvector2;
+	typedef dvec3 dvector3;
+	typedef dvec4 dvector4;
+
+	typedef tvec2<int> ivec2;
+	typedef tvec3<int> ivec3;
+	typedef tvec4<int> ivec4;
+	typedef ivec2 ivector2;
+	typedef ivec3 ivector3;
+	typedef ivec4 ivector4;
+
+	typedef tvec2<unsigned int> uvec2;
+	typedef tvec3<unsigned int> uvec3;
+	typedef tvec4<unsigned int> uvec4;
+	typedef uvec2 uvector2;
+	typedef uvec3 uvector3;
+	typedef uvec4 uvector4;
+
+	typedef tvec2<bool> bvec2;
+	typedef tvec3<bool> bvec3;
+	typedef tvec4<bool> bvec4;
+	typedef bvec2 bvector2;
+	typedef bvec3 bvector3;
+	typedef bvec4 bvector4;
 };

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "math.h"
 #include "vector.h"
 #include "matrix.h"
 #include "quaternion.h"
+#include "transformation.h"
 #include "transform.h"
+#include "operation.h"

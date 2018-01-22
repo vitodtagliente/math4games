@@ -6,7 +6,7 @@ using namespace math4games;
 using namespace std;
 
 template<size_t n, class T>
-void log(const vector<n, T>& v) {
+void log(const vec<n, T>& v) {
 	cout << "Vector: ";
 	for (int i = 0; i < n; i++)
 		cout << v[i] << " ";
@@ -94,6 +94,9 @@ int main(int argc, char **argv) {
 	log(m.adjugate());
 	log(m.minor(0, 0));
 	log(m.inverse(invertible));
+
+	cout << sizeof(vector2) << endl;
+	cout << sizeof(float) << endl;
 	
 	timer.stop();
 	cout << endl << "execution time: " << timer << " secs" << '\n';
