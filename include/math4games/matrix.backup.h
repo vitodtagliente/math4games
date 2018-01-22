@@ -7,7 +7,6 @@ credits: Vito Domenico Tagliente
 
 #include <cassert>
 #include <initializer_list>
-#include <array>
 
 #include "vector.h"
 
@@ -60,7 +59,7 @@ namespace math4games
 
 		T determinant() {
 			/* must be square matrix */
-			assert(n == m && n > 0);
+			assert(n == m && n > 0 && m > 0);
 
 			if (n == 1)
 				return data[0][0];
@@ -79,11 +78,11 @@ namespace math4games
 				for (int i = 0; i < m; i++) {
 					assert(n > 0 && m > 0);
 					matrix<n - 1, m - 1, T> currentMinor = minor(i, j);
-					/* //TODO? fix this compile error
+					/* TODO? fix this compile error
 					if (i + j % 2 != 0)
 					result -= currentMinor.determinant();
-					else result += currentMinor.determinant();*/
-					
+					else result += currentMinor.determinant();
+					*/
 				}
 				return result;
 			}
@@ -125,7 +124,9 @@ namespace math4games
 			for (int j = 0; j < n; j++) {
 				for (int i = 0; i < m; i++) {
 					matrix<n - 1, m - 1, T> currentMinor = minor(i, j);
-					result.data[j][i] = std::pow(-1, i + 1)*currentMinor.determinant();
+					result.data[j][i] = currentMinor.determinant();
+					if (i + j % 2 != 0)
+						result.data[j][i] = -result.data[j][i];
 				}
 			}
 			return result;
@@ -380,13 +381,6 @@ namespace math4games
 	typedef matrix2 mat2;
 	typedef matrix3 mat3;
 	typedef matrix4 mat4;
-
-	typedef matrix2 fmatrix2;
-	typedef matrix3 fmatrix3;
-	typedef matrix4 fmatrix4;
-	typedef mat2 fmat2;
-	typedef mat3 fmat3;
-	typedef mat4 fmat4;
 
 	typedef tmatrix2<double> dmatrix2;
 	typedef tmatrix3<double> dmatrix3;
