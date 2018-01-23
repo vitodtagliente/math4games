@@ -335,6 +335,22 @@ namespace math4games
 				(data[0][2] * data[1][0] * data[2][1]);
 		}
 
+		static tmatrix3<float> rotateX(const float delta_x, const float delta_y) {
+			return matrix3<float>(
+				1, 0, 0,
+				0, 1, 0,
+				delta_x, delta_y, 1
+			);
+		}
+
+		static tmatrix3<float> rotateX(const vec2& v) {
+			return matrix3<float>(
+				1, 0, 0,
+				0, 1, 0,
+				v.x, v.y, 1
+			);
+		}
+
 		static tmatrix3<float> rotateX(const float theta) {
 			return matrix3<float>(
 				1, 0, 0,
@@ -430,6 +446,24 @@ namespace math4games
 				result += std::pow(-1, i + j)*currentMinor.determinant();
 			}
 			return result;
+		}
+
+		static tmatrix4<float> rotateX(const float delta_x, const float delta_y, const float delta_z) {
+			return matrix4<float>(
+				1, 0, 0, 0,
+				0, 1, 0, 0,
+				0, 0, 1, 0,
+				delta_x, delta_y, delta_z, 1
+			);
+		}
+
+		static tmatrix4<float> rotateX(const vec3& v) {
+			return matrix4<float>(
+				1, 0, 0, 0,
+				0, 1, 0, 0,
+				0, 0, 1, 0,
+				v.x, v.y, v.z, 1
+			);
 		}
 
 		static const matrix<4, 4, T> zero;
