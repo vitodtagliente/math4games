@@ -271,10 +271,24 @@ namespace math4games
 			return data[0][0] * data[1][1] - (data[0][1] * data[1][0]);
 		}
 
-		static tmatrix2<T> rotation(const float theta) {
-			return tmatrix2<T>(
+		static tmatrix2<float> rotate(const float theta) {
+			return tmatrix2<float>(
 				std::cos(theta), std::sin(theta),
 				-std::sin(theta), std::cos(theta)
+			);
+		}
+
+		static tmatrix2<float> scale(const float scale_x, const float scale_y) {
+			return tmatrix2<float>(
+				scale_x, 0,
+				0, scale_y
+			);
+		}
+
+		static tmatrix2<float> scale(const vec2& v) {
+			return tmatrix2<float>(
+				v.x, 0,
+				0, v.y
 			);
 		}
 
@@ -321,32 +335,48 @@ namespace math4games
 				(data[0][2] * data[1][0] * data[2][1]);
 		}
 
-		static tmatrix3<T> rotationX(const float theta) {
-			return matrix3<T>(
+		static tmatrix3<float> rotateX(const float theta) {
+			return matrix3<float>(
 				1, 0, 0,
 				0, std::cos(theta), -std::sin(theta),
 				0, std:sin(theta), std::cos(theta)
 			);
 		}
 
-		static tmatrix3<T> rotationY(const float theta) {
-			return tmatrix3<T>(
+		static tmatrix3<float> rotateY(const float theta) {
+			return tmatrix3<float>(
 				std::cos(theta), 0, std::sin(theta),
 				0, 1, 0,
 				-std::sin(theta), 0, std::cos(theta)
 			);
 		}
 
-		static tmatrix3<T> rotationZ(const float theta) {
-			return tmatrix3<T>(
+		static tmatrix3<float> rotateZ(const float theta) {
+			return tmatrix3<float>(
 				std::cos(theta), -std::sin(theta), 0,
 				std::sin(theta), std::cos(theta), 0,
 				0, 0, 1
 			);
 		}
 
-		static tmatrix3<T> rotation(const tvec3<T>& v, const float theta) {
-			return tmatrix3 < T >(); // TODO: to be implemented
+		static tmatrix3<float> rotate(const vec3& v, const float theta) {
+			return tmatrix3 <float>(); // TODO: to be implemented
+		}
+
+		static tmatrix3<float> scale(const float scale_x, const float scale_y, const float scale_z) {
+			return tmatrix3<float>(
+				scale_x, 0, 0,
+				0, scale_y, 0,
+				0, 0, scale_z
+			);
+		}
+
+		static tmatrix3<float> scale(const vec3& v) {
+			return tmatrix3<float>(
+				v.x, 0, 0,
+				0, v.y, 0,
+				0, 0, v.z
+			);
 		}
 
 		static const matrix<3, 3, T> zero;
