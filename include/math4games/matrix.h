@@ -58,37 +58,20 @@ namespace math4games
 			return data[j][i];
 		}
 
-		T determinant() {
-			/* must be square matrix */
-			assert(n == m && n > 0);
+		matrix<n, m, T> identity() {
+			/* check if it is square matrix */
+			assert(n == m);
 
-			if (n == 1)
-				return data[0][0];
-			else if (n == 2)
-				return data[0][0] * data[1][1] - (data[0][1] * data[1][0]);
-			else if (n == 3) {
-				/* Sarrus law */
-				return (data[0][0] * data[1][1] * data[2][2]) -
-					(data[0][1] * data[1][2] * data[2][0]) -
-					(data[0][2] * data[1][0] * data[2][1]);
-			}
-			else {
-				/* Laplace law */
-				int j = 0;
-				T result{};
-				for (int i = 0; i < m; i++) {
-					assert(n > 0 && m > 0);
-					matrix<n - 1, m - 1, T> currentMinor = minor(i, j);
-					/* //TODO? fix this compile error
-					if (i + j % 2 != 0)
-					result -= currentMinor.determinant();
-					else result += currentMinor.determinant();*/
-					
-				}
-				return result;
+			matrix<n, m, T> M(0);
+			for (i = 0; i < n; i++) {
+				data[i][i] = 1.0;
 			}
 		}
-		
+
+		virtual T determinant() {
+			return T{};
+		}
+				
 		matrix<n - 1, m - 1, T> minor(int x, int y) {
 			matrix<n - 1, m - 1, T> result;
 			for (int j = 0; j < n; j++) {
@@ -284,6 +267,10 @@ namespace math4games
 			return *this;
 		}
 
+		T determinant() override {
+			return data[0][0] * data[1][1] - (data[0][1] * data[1][0]);
+		}
+
 		static const matrix<2, 2, T> zero;
 		static const matrix<2, 2, T> identity;
 	};
@@ -318,6 +305,13 @@ namespace math4games
 				for (int j = 0; j < columns; j++)
 					data[i][j] = m.data[i][j];
 			return *this;
+		}
+
+		T determinant() override {
+			/* Sarrus law */
+			return (data[0][0] * data[1][1] * data[2][2]) -
+				(data[0][1] * data[1][2] * data[2][0]) -
+				(data[0][2] * data[1][0] * data[2][1]);
 		}
 
 		static const matrix<3, 3, T> zero;
@@ -360,6 +354,17 @@ namespace math4games
 				for (int j = 0; j < columns; j++)
 					data[i][j] = m.data[i][j];
 			return *this;
+		}
+
+		T determinant() override {
+			/* Laplace law */
+			int j = 0;
+			T result{};
+			for (int i = 0; i < m; i++) {
+				auto currentMinor = M->minor(i, j);
+				result += std::pow(-1, i + j)*currentMinor.determinant();
+			}
+			return result;
 		}
 
 		static const matrix<4, 4, T> zero;
