@@ -5,5 +5,5 @@
 
 namespace math4games
 {
-	
+
 };

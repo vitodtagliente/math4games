@@ -271,6 +271,13 @@ namespace math4games
 			return data[0][0] * data[1][1] - (data[0][1] * data[1][0]);
 		}
 
+		static tmatrix2<T> rotation(const float theta) {
+			return tmatrix2<T>(
+				std::cos(theta), std::sin(theta),
+				-std::sin(theta), std::cos(theta)
+			);
+		}
+
 		static const matrix<2, 2, T> zero;
 		static const matrix<2, 2, T> identity;
 	};
@@ -312,6 +319,34 @@ namespace math4games
 			return (data[0][0] * data[1][1] * data[2][2]) -
 				(data[0][1] * data[1][2] * data[2][0]) -
 				(data[0][2] * data[1][0] * data[2][1]);
+		}
+
+		static tmatrix3<T> rotationX(const float theta) {
+			return matrix3<T>(
+				1, 0, 0,
+				0, std::cos(theta), -std::sin(theta),
+				0, std:sin(theta), std::cos(theta)
+			);
+		}
+
+		static tmatrix3<T> rotationY(const float theta) {
+			return tmatrix3<T>(
+				std::cos(theta), 0, std::sin(theta),
+				0, 1, 0,
+				-std::sin(theta), 0, std::cos(theta)
+			);
+		}
+
+		static tmatrix3<T> rotationZ(const float theta) {
+			return tmatrix3<T>(
+				std::cos(theta), -std::sin(theta), 0,
+				std::sin(theta), std::cos(theta), 0,
+				0, 0, 1
+			);
+		}
+
+		static tmatrix3<T> rotation(const tvec3<T>& v, const float theta) {
+			return tmatrix3 < T >(); // TODO: to be implemented
 		}
 
 		static const matrix<3, 3, T> zero;
