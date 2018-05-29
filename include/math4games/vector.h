@@ -1,8 +1,9 @@
 #pragma once
 
 /*
-vector implementation
-credits: Vito Domenico Tagliente
+	Vector math representation
+	Vito Domenico Tagliente 
+	math library for games
 */
 
 #include <cmath>
@@ -12,76 +13,91 @@ credits: Vito Domenico Tagliente
 
 namespace math4games
 {
-	template<std::size_t n, typename T>
-	struct vec
+	template<std::size_t N, typename T>
+	struct base_vector
 	{
-		std::array<T, n> data;
+		// vector size
+		const std::size_t length = N;
 
-		vec() {
+		// store data into a managed array
+		std::array<T, N> data;
+
+		// default constructor
+		base_vector() {
 			data.fill(T{});
 		}
 
-		vec(const T& value) {
+		// this constructor fill all components with the same value
+		base_vector(const T value) {
 			data.fill(value);
 		}
 
-		vec(const std::initializer_list<T> args) {
-			assert(args.size() <= n);
-			int i = 0;
-			for (auto begin = args.begin(); begin != args.end(); ++begin) {
+		// construct with initialzie list
+		base_vector(const std::initializer_list<T>& args) {
+			unsigned int i = 0;
+			for (auto begin = args.begin(); begin != args.end() && i < N; ++begin) {
 				data.at(i) = *begin;
-				i++;
+				++i;
 			}
 		}
 
-		T& operator[] (const std::size_t i) {
-			assert(i >= 0 && i < n);
+		// copy constructor
+		base_vector(const base_vector& other)
+		{
+			unsigned int i = 0;
+			for (auto begin = other.data.begin(); begin != other.data.end() && i < N; ++begin)
+			{
+				data.at(i) = *begin;
+				++i;
+			}
+		}
+
+		// return the i-index component
+		T& operator[] (const unsigned int i) {
+			assert(i >= 0 && i < N);
 			return data[i];
 		}
 
-		T operator[] (const std::size_t i) const {
-			assert(i >= 0 && i < n);
+		T operator[] (const unsigned int i) const {
+			assert(i >= 0 && i < N);
 			return data[i];
 		}
 
+		// compute the magnitude
+		// magnitude = x1 * x1 + x2 * x2 + ... + xn * xn
 		T magnitude() const {
 			T result = {};
-			for (std::size_t i = 0; i < n; ++i)
+			for (std::size_t i = 0; i < N; ++i)
 				result += data[i] * data[i];
-			return sqrt(result);
+			return static_cast<T>(sqrt(result));
 		}
 
-		T distance(const vec<n, T>& other) const {
+		// compute the distance between another vector
+		T distance(const base_vector<N, T>& other) const {
 			return (*this - other).magnitude();
 		}
 
-		static T distance(const vec<n, T>& v, const vec<n, T>& w) {
-			return (v - w).magnitude();
-		}
-
-		T dot(const vec<n, T>& other) const {
+		// dot product
+		T dot(const base_vector<N, T>& other) const {
 			return (*this)*other;
 		}
 
-		static T dot(const vec<n, T>& v, const vec<n, T>& w) {
-			return v*w;
+		// normalize the vector
+		base_vector<N, T> normalize() {
+			return (*this *= static_cast<T>((1.0f / magnitude())));
 		}
 
-		vec<n, T> normalize() {
-			return (*this *= (1.0f / magnitude()));
+		base_vector<N, T> project(const base_vector<N, T>& v) {
+			return v * ((*this*v) / (v*v));
 		}
 
-		vec<n, T> project(const vec<n, T>& v) {
-			return v* ((*this*v) / (v*v));
-		}
-		
-		vec<n, T> reject(const vec<n, T>& v) {
+		base_vector<N, T> reject(const base_vector<N, T>& v) {
 			return (*this - v)* ((*this*v) / (v*v));
 		}
-		
+
 		/* Operators overloading */
 
-		vec<n, T>& operator= (const vec<n, T>& other) {
+		base_vector<N, T>& operator= (const base_vector<N, T>& other) {
 			/* check for self-assignment */
 			if (this == &other)
 				return *this;
@@ -91,238 +107,191 @@ namespace math4games
 			return *this;
 		}
 
-		bool operator== (const vec<n, T>& other) const {
+		bool operator== (const base_vector<N, T>& other) const {
 			return (*this).data == other.data;
 		}
 
-		bool operator!= (const vec<n, T>& other) const {
+		bool operator!= (const base_vector<N, T>& other) const {
 			return !(*this == other);
 		}
 
-		vec<n, T>& operator+= (const vec<n, T>& other) {
-			for (std::size_t i = 0; i < n; i++)
+		base_vector<N, T>& operator+= (const base_vector<N, T>& other) {
+			for (std::size_t i = 0; i < N; i++)
 				data[i] += other[i];
 			return *this;
 		}
 
-		vec<n, T>& operator-= (const vec<n, T>& other) {
-			for (std::size_t i = 0; i < n; i++)
+		base_vector<N, T>& operator-= (const base_vector<N, T>& other) {
+			for (std::size_t i = 0; i < N; i++)
 				data[i] -= other[i];
 			return *this;
 		}
 
-		vec<n, T>& operator*= (const T s) {
-			for (std::size_t i = 0; i < n; i++)
+		base_vector<N, T>& operator*= (const T s) {
+			for (std::size_t i = 0; i < N; i++)
 				data[i] *= s;
 			return *this;
 		}
 
-		vec<n, T>& operator/= (const T s) {
+		base_vector<N, T>& operator/= (const T s) {
 			T f = 1.0f / s;
-			for (std::size_t i = 0; i < n; i++)
+			for (std::size_t i = 0; i < N; i++)
 				data[i] *= f;
 			return *this;
 		}
 
-		vec<n, T> operator- () const {
-			vec<n, T> v;
-			for (std::size_t i = 0; i < n; i++)
+		base_vector<N, T> operator- () const {
+			base_vector<N, T> v;
+			for (std::size_t i = 0; i < N; i++)
 				v[i] = -data[i];
 			return v;
 		}
 
-		vec<n, T> operator+ (const vec<n, T>& w) const {
-			vec<n, T> v;
-			for (std::size_t i = 0; i < n; i++)
+		base_vector<N, T> operator+ (const base_vector<N, T>& w) const {
+			base_vector<N, T> v;
+			for (std::size_t i = 0; i < N; i++)
 				v[i] = data[i] + w[i];
 			return v;
 		}
 
-		vec<n, T> operator- (const vec<n, T>& w) const {
-			vec<n, T> v;
-			for (std::size_t i = 0; i < n; i++)
+		base_vector<N, T> operator- (const base_vector<N, T>& w) const {
+			base_vector<N, T> v;
+			for (std::size_t i = 0; i < N; i++)
 				v[i] = data[i] - w[i];
 			return v;
 		}
 
-		vec<n, T> operator* (const T s) const {
-			vec<n, T> v;
-			for (std::size_t i = 0; i < n; i++)
+		base_vector<N, T> operator* (const T s) const {
+			base_vector<N, T> v;
+			for (std::size_t i = 0; i < N; i++)
 				v[i] = data[i] * s;
 			return v;
 		}
 
-		vec<n, T> operator/ (const T s) const {
+		base_vector<N, T> operator/ (const T s) const {
 			T f = 1.0f / s;
-			vec<n, T> v;
-			for (std::size_t i = 0; i < n; i++)
+			base_vector<N, T> v;
+			for (std::size_t i = 0; i < N; i++)
 				v[i] = data[i] * f;
 			return v;
 		}
 
 		/* dot product */
-		T operator*(const vec<n, T>& v) const {
+		T operator*(const base_vector<N, T>& v) const {
 			T dot{};
-			for (std::size_t i = 0; i < n; i++)
+			for (std::size_t i = 0; i < N; i++)
 				dot += data[i] * v[i];
 			return dot;
 		}
 	};
 
-	template<std::size_t n, class T>
-	inline vec<n, T> operator* (const T s, const vec<n, T>& v) {
-		vec<n, T> w;
-		for (std::size_t i = 0; i < n; i++)
+	template<std::size_t N, class T>
+	inline base_vector<N, T> operator* (const T s, const base_vector<N, T>& v) {
+		base_vector<N, T> w;
+		for (std::size_t i = 0; i < N; i++)
 			w[i] = v[i] * s;
 		return w;
 	}
 
+	// undefined order zero vector
 	template<typename T>
-	struct tvec2 : public vec<2, T>
+	struct base_vector<0, T>;
+
+	// order 2 vector
+	template<typename T>
+	struct base_vector2 : public base_vector<2, T>
 	{
-		float& x = data[0];
-		float& y = data[1];
+		// inherits base class constructors
+		using base_vector<2, T>::base_vector;
 
-		tvec2() : vec<2, T>() {}
-		tvec2(T _x, T _y) {
-			data[0] = _x;
-			data[1] = _y;
-		}
-		tvec2(const vec<2, T>& v) {
-			data = v.data;
-		}
-		tvec2(const T& value) : vec<2, T>(value) {}
-		tvec2(const std::initializer_list<T> args) : vec<2, T>(args) {}
+		T& x = base_vector<2, T>::data[0];
+		T& y = base_vector<2, T>::data[1];
 
-		tvec2<T>& operator= (const vec<2, T>& v) {
-			data = v.data;
-			return *this;
+		base_vector2(const T _x, const T _y)
+		{
+			base_vector<2, T>::data[0] = _x;
+			base_vector<2, T>::data[1] = _y;
 		}
 
-		static const vec<2, T> zero;
-		static const vec<2, T> up;
-		static const vec<2, T> right;
+		static const base_vector2<T> zero;
+		static const base_vector2<T> up;
+		static const base_vector2<T> right;
 	};
 
-	template<typename T> const vec<2, T> tvec2<T>::zero = tvec2<T>(0.0, 0.0);
-	template<typename T> const vec<2, T> tvec2<T>::up = tvec2<T>(0.0, 1.0);
-	template<typename T> const vec<2, T> tvec2<T>::right = tvec2<T>(1.0, 0.0);
-	
+	template<typename T> const base_vector2<T> base_vector2<T>::zero = base_vector2<T>(0.0, 0.0);
+	template<typename T> const base_vector2<T> base_vector2<T>::up = base_vector2<T>(0.0, 1.0);
+	template<typename T> const base_vector2<T> base_vector2<T>::right = base_vector2<T>(1.0, 0.0);
+
+	// order 3 vector
 	template<typename T>
-	struct tvec3 : public vec<3, T>
+	struct base_vector3 : public base_vector<3, T>
 	{
-		float& x = data[0];
-		float& y = data[1];
-		float& z = data[2];
-		
-		tvec3() : vec<3, T>() {}
-		tvec3(T _x, T _y, T _z) {
-			data[0] = _x;
-			data[1] = _y;
-			data[2] = _z;
-		}
-		tvec3(const vec<3, T>& v) {
-			data = v.data;
-		}
-		tvec3(const T& value) : vec<3, T>(value) {}
-		tvec3(const std::initializer_list<T> args) : vec<3, T>(args) {}
+		// inherits base class constructors
+		using base_vector<3, T>::base_vector;
 
-		tvec3(const vec<2, T>& v) {
-			data[0] = v[0];
-			data[1] = v[1];
-			data[2] = T{};
+		T& x = base_vector<3, T>::data[0];
+		T& y = base_vector<3, T>::data[1];
+		T& z = base_vector<3, T>::data[2];
+
+		base_vector3(const T _x, const T _y, const T _z) {
+			base_vector<3, T>::data[0] = _x;
+			base_vector<3, T>::data[1] = _y;
+			base_vector<3, T>::data[2] = _z;
 		}
 
-		/* cross product */
-		tvec3 cross(const tvec3 v) const {
-			return tvec3(
-				y*v.z - z*v.y,
-				z*v.x - x*v.z,
-				x*v.y - y*v.x
+		//cross product
+		base_vector3<T> cross(const base_vector3<T>& v) const {
+			return base_vector3<T>(
+				y*v.z - z * v.y,
+				z*v.x - x * v.z,
+				x*v.y - y * v.x
 			);
 		}
 
-		static tvec3 cross(const tvec3& v, const tvec3& w) {
-			return tvec3<T>(
-				v.y*w.z - v.z*w.y,
-				v.z*w.x - v.x*w.z,
-				v.x*w.y - v.y*w.x
-			);
-		}
-
-		/* scalar triple product */
-		float triple(const tvec3& v, const tvec3& w) const {
+		// scalar triple product
+		float triple(const  base_vector3<T>& v, const  base_vector3<T>& w) const {
 			return ((*this).cross(v))*w;
 		}
 
-		/* scalar triple product */
-		static float triple(const tvec3& v1, const tvec3& v2, const tvec3<T>& v3) {
-			return (v1.cross(v2))*v3;
-		}
-
-		tvec3<T>& operator= (const vec<3, T>& v) {
-			data = v.data;
-			return *this;
-		}
-
-		static const vec<3, T> zero;
-		static const vec<3, T> up;
-		static const vec<3, T> right;
-		static const vec<3, T> forward;
-	}; 
-	
-	template<typename T> const vec<3, T> tvec3<T>::zero = tvec3<T>(0.0, 0.0, 0.0);
-	template<typename T> const vec<3, T> tvec3<T>::up = tvec3<T>(0.0, 1.0, 0.0);
-	template<typename T> const vec<3, T> tvec3<T>::right = tvec3<T>(1.0, 0.0, 0.0);
-	template<typename T> const vec<3, T> tvec3<T>::forward = tvec3<T>(0.0, 0.0, -1.0);
-
-	template<typename T>
-	struct tvec4 : public vec<4, T>
-	{
-		float& x = data[0];
-		float& y = data[1];
-		float& z = data[2];
-		float& w = data[3];
-
-		tvec4() : vec<4, T>() {}
-		tvec4(T _x, T _y, T _z, T _w) {
-			data[0] = _x;
-			data[1] = _y;
-			data[2] = _z;
-			data[3] = _w;
-		}
-		tvec4(const vec<4, T>& v) {
-			data = v.data;
-		}
-		tvec4(const T& value) : vec<4, T>(value) {}
-		tvec4(const std::initializer_list<T> args) : vec<4, T>(args) {}
-
-		tvec4(const vec<2, T>& v) {
-			data[0] = v[0];
-			data[1] = v[1];
-			data[2] = T{};
-			data[3] = T{};
-		}
-		tvec4(const vec<3, T>& v) {
-			data[0] = v[0];
-			data[1] = v[1];
-			data[2] = v[2];
-			data[3] = T{};
-		}
-
-		tvec4<T>& operator= (const vec<4, T>& v) {
-			data = v.data;
-			return *this;
-		}
-
-		static const vec<4, T> zero;
+		static const base_vector3<T> zero;
+		static const base_vector3<T> up;
+		static const base_vector3<T> right;
+		static const base_vector3<T> forward;
 	};
 
-	template<typename T> const vec<4, T> tvec4<T>::zero = tvec4<T>(0.0, 0.0, 0.0, 0.0);
+	template<typename T> const base_vector3<T> base_vector3<T>::zero = base_vector3<T>(0.0, 0.0, 0.0);
+	template<typename T> const base_vector3<T> base_vector3<T>::up = base_vector3<T>(0.0, 1.0, 0.0);
+	template<typename T> const base_vector3<T> base_vector3<T>::right = base_vector3<T>(1.0, 0.0, 0.0);
+	template<typename T> const base_vector3<T> base_vector3<T>::forward = base_vector3<T>(0.0, 0.0, -1.0);
 
-	typedef tvec2<float> vec2;
-	typedef tvec3<float> vec3;
-	typedef tvec4<float> vec4;
+	// order 4 vector
+	template<typename T>
+	struct base_vector4 : public base_vector<4, T>
+	{
+		// inherits base class constructors
+		using base_vector<4, T>::base_vector;
+
+		T& x = base_vector<4, T>::data[0];
+		T& y = base_vector<4, T>::data[1];
+		T& z = base_vector<4, T>::data[2];
+		T& w = base_vector<4, T>::data[3];
+
+		base_vector4(const T _x, const T _y, const T _z, const T _w) {
+			base_vector<4, T>::data[0] = _x;
+			base_vector<4, T>::data[1] = _y;
+			base_vector<4, T>::data[2] = _z;
+			base_vector<4, T>::data[3] = _w;
+		}
+
+		static const base_vector4<T> zero;
+	};
+
+	template<typename T> const base_vector4<T> base_vector4<T>::zero = base_vector4<T>(0.0, 0.0, 0.0, 0.0);
+
+	// vector types
+	typedef base_vector2<float> vec2;
+	typedef base_vector3<float> vec3;
+	typedef base_vector4<float> vec4;
 	typedef vec2 vector2;
 	typedef vec3 vector3;
 	typedef vec4 vector4;
@@ -334,31 +303,24 @@ namespace math4games
 	typedef vector3 fvector3;
 	typedef vector4 fvector4;
 
-	typedef tvec2<double> dvec2;
-	typedef tvec3<double> dvec3;
-	typedef tvec4<double> dvec4;
+	typedef base_vector2<double> dvec2;
+	typedef base_vector3<double> dvec3;
+	typedef base_vector4<double> dvec4;
 	typedef dvec2 dvector2;
 	typedef dvec3 dvector3;
 	typedef dvec4 dvector4;
 
-	typedef tvec2<int> ivec2;
-	typedef tvec3<int> ivec3;
-	typedef tvec4<int> ivec4;
+	typedef base_vector2<int> ivec2;
+	typedef base_vector3<int> ivec3;
+	typedef base_vector4<int> ivec4;
 	typedef ivec2 ivector2;
 	typedef ivec3 ivector3;
 	typedef ivec4 ivector4;
 
-	typedef tvec2<unsigned int> uvec2;
-	typedef tvec3<unsigned int> uvec3;
-	typedef tvec4<unsigned int> uvec4;
+	typedef base_vector2<unsigned int> uvec2;
+	typedef base_vector3<unsigned int> uvec3;
+	typedef base_vector4<unsigned int> uvec4;
 	typedef uvec2 uvector2;
 	typedef uvec3 uvector3;
 	typedef uvec4 uvector4;
-
-	typedef tvec2<bool> bvec2;
-	typedef tvec3<bool> bvec3;
-	typedef tvec4<bool> bvec4;
-	typedef bvec2 bvector2;
-	typedef bvec3 bvector3;
-	typedef bvec4 bvector4;
 };

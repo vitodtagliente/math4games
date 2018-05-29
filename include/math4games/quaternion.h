@@ -1,18 +1,18 @@
 #pragma once
 
 /*
-quaternion implementation
-credits: Vito Domenico Tagliente
-
-quaternion formal representation -> a + bi + cj + dk
+	Quaternion math representation
+	Vito Domenico Tagliente
+	math library for games
 */
 
-#include "vector.h"
+#include <cmath>
 
 namespace math4games
 {
-	struct quaternion
+	template <typename T>
+	struct base_quaternion
 	{
-		float w, x, y, z;
+
 	};
 };
