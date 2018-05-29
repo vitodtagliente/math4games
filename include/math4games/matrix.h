@@ -31,7 +31,7 @@ namespace math4games
 			data.fill(value);
 		}
 
-		// construct with initialzie list
+		// constructor with initializer list
 		base_matrix(const std::initializer_list<T>& args) {
 			unsigned int i = 0;
 			for (auto begin = args.begin(); begin != args.end() && i < N * M; ++begin) {
@@ -46,12 +46,12 @@ namespace math4games
 			data = other.data;
 		}
 
-		T& operator() (const std::size_t i, const std::size_t j) {
+		T& operator() (const unsigned int i, const unsigned int j) {
 			assert(i < columns && j < rows);
 			return data[i + j * columns];
 		}
 
-		const T& operator() (const std::size_t i, const std::size_t j) const {
+		const T& operator() (const unsigned int i, const unsigned int j) const {
 			assert(i < columns && j < rows);
 			return data[i + j * columns];
 		}
@@ -63,14 +63,14 @@ namespace math4games
 		}
 
 		// sub matrix
-		base_matrix<N - 1, M - 1, T> minor(const std::size_t x, const std::size_t y) const {
+		base_matrix<N - 1, M - 1, T> minor(const unsigned int x, const unsigned int y) const {
 			assert(x < columns && y < rows);
 			base_matrix<N - 1, M - 1, T> result;
 
-			for (int j = 0, _j = 0; j < N; ++j)
+			for (unsigned int j = 0, _j = 0; j < N; ++j)
 			{
 				if (j == y) continue;
-				for (int i = 0, _i = 0; i < M; ++i)
+				for (unsigned int i = 0, _i = 0; i < M; ++i)
 				{
 					if (i == x) continue;
 					result(_i, _j) = (*this)(i, j);
@@ -84,8 +84,8 @@ namespace math4games
 		// transpose matrix
 		base_matrix<M, N, T> transpose() {
 			base_matrix<M, N, T> MT;
-			for (int j = 0; j < N; j++) {
-				for (int i = 0; i < M; i++) {
+			for (unsigned int j = 0; j < N; j++) {
+				for (unsigned int i = 0; i < M; i++) {
 					MT(i, j) = (*this)(j, i);
 				}
 			}
@@ -106,8 +106,8 @@ namespace math4games
 		// adjugate matrix
 		base_matrix<N, M, T> adjugate() {
 			base_matrix<N, M, T> result;
-			for (int j = 0; j < N; ++j) {
-				for (int i = 0; i < M; ++i) {
+			for (unsigned int j = 0; j < N; ++j) {
+				for (unsigned int i = 0; i < M; ++i) {
 					base_matrix<N - 1, M - 1, T> currentMinor = minor(i, j);
 					result(j, i) = static_cast<T>(std::pow(-1, i + 1))*currentMinor.determinant();
 				}
@@ -136,19 +136,19 @@ namespace math4games
 		}
 
 		base_matrix<N, M, T>& operator+= (const base_matrix<N, M, T>& other) {
-			for (int i = 0; i < data.size(); i++)
+			for (unsigned int i = 0; i < data.size(); i++)
 				data[i] += other.data[i];
 			return *this;
 		}
 
 		base_matrix<N, M, T>& operator-= (const base_matrix<N, M, T>& other) {
-			for (int i = 0; i < data.size(); i++)
+			for (unsigned int i = 0; i < data.size(); i++)
 				data[i] -= other.data[i];
 			return *this;
 		}
 
 		base_matrix<N, M, T>& operator*= (const T s) {
-			for (int i = 0; i < data.size(); i++)
+			for (unsigned int i = 0; i < data.size(); i++)
 				data[i] *= s;
 			return *this;
 		}
@@ -160,28 +160,28 @@ namespace math4games
 
 		base_matrix<N, M, T> operator- () const {
 			base_matrix<N, M, T> result;
-			for (int i = 0; i < data.size(); i++)
+			for (unsigned int i = 0; i < data.size(); i++)
 				result.data[i] = -data[i];
 			return result;
 		}
 
 		base_matrix<N, M, T> operator+ (const base_matrix<N, M, T>& other) const {
 			base_matrix<N, M, T> result;
-			for (int i = 0; i < data.size(); i++)
+			for (unsigned int i = 0; i < data.size(); i++)
 				result.data[i] = data[i] + other.data[i];
 			return result;
 		}
 
 		base_matrix<N, M, T> operator- (const base_matrix<N, M, T>& other) const {
 			base_matrix<N, M, T> result;
-			for (int i = 0; i < data.size(); i++)
+			for (unsigned int i = 0; i < data.size(); i++)
 				result.data[i] = data[i] - other.data[i];
 			return result;
 		}
 
 		base_matrix<N, M, T> operator* (const T s) const {
 			base_matrix<N, M, T> result;
-			for (int i = 0; i < data.size(); i++)
+			for (unsigned int i = 0; i < data.size(); i++)
 				result.data[i] = data[i] * s;
 			return result;
 		}
@@ -199,7 +199,7 @@ namespace math4games
 		/* Laplace law */
 		int j = 0;
 		T result{};
-		for (int i = 0; i < M; ++i) {
+		for (unsigned int i = 0; i < M; ++i) {
 			auto minor = m.minor(i, j);
 			result += std::pow(-1, i + j)*determinant_algorithm(minor);
 		}
