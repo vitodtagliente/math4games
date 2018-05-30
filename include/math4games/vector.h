@@ -35,39 +35,59 @@ namespace math4games
 		// construct with initialzie list
 		base_vector(const std::initializer_list<T>& args) {
 			unsigned int i = 0;
-			for (auto begin = args.begin(); begin != args.end() && i < N; ++begin) {
-				data.at(i) = *begin;
+			for (auto it = args.begin(); it != args.end() && i < length; ++it) {
+				data[i] = *it;
 				++i;
 			}
 		}
 
 		// copy constructor
-		base_vector(const base_vector& other)
+		base_vector(const base_vector<N, T>& other)
+		{
+			data = other.data;
+		}
+
+		// templated copy constructor
+		template<std::size_t M>
+		base_vector(const base_vector<M, T>& other)
 		{
 			unsigned int i = 0;
-			for (auto begin = other.data.begin(); begin != other.data.end() && i < N; ++begin)
+			for (auto it = other.data.begin(); it != other.data.end() && i < length; ++it)
 			{
-				data.at(i) = *begin;
+				data[i] = *it;
 				++i;
 			}
+		}
+		
+		// return the vector length
+		std::size_t size() const {
+			return length;
 		}
 
 		// return the i-index component
 		T& operator[] (const unsigned int i) {
-			assert(i >= 0 && i < N);
 			return data[i];
 		}
 
 		T operator[] (const unsigned int i) const {
-			assert(i >= 0 && i < N);
 			return data[i];
+		}
+
+		T& operator() (const unsigned int i)
+		{
+			return data.at(i);
+		}
+
+		T operator() (const unsigned int i) const
+		{
+			return data.at(i);
 		}
 
 		// compute the magnitude
 		// magnitude = x1 * x1 + x2 * x2 + ... + xn * xn
 		T magnitude() const {
 			T result = {};
-			for (std::size_t i = 0; i < N; ++i)
+			for (unsigned int i = 0; i < length; ++i)
 				result += data[i] * data[i];
 			return static_cast<T>(sqrt(result));
 		}
@@ -84,15 +104,19 @@ namespace math4games
 
 		// normalize the vector
 		base_vector<N, T> normalize() {
-			return (*this *= static_cast<T>((1.0f / magnitude())));
+			return (*this *= (static_cast<T>(1.0) / magnitude()));
 		}
 
 		base_vector<N, T> project(const base_vector<N, T>& v) {
-			return v * ((*this*v) / (v*v));
+			T d = v * v;
+			assert(d != static_cast<T>(0.0));
+			return v * ((*this*v) / d);
 		}
 
 		base_vector<N, T> reject(const base_vector<N, T>& v) {
-			return (*this - v)* ((*this*v) / (v*v));
+			T d = v * v;
+			assert(d != static_cast<T>(0.0));
+			return (*this - v)* ((*this*v) / d);
 		}
 
 		/* Operators overloading */
@@ -116,62 +140,64 @@ namespace math4games
 		}
 
 		base_vector<N, T>& operator+= (const base_vector<N, T>& other) {
-			for (std::size_t i = 0; i < N; i++)
+			for (unsigned int i = 0; i < length; i++)
 				data[i] += other[i];
 			return *this;
 		}
 
 		base_vector<N, T>& operator-= (const base_vector<N, T>& other) {
-			for (std::size_t i = 0; i < N; i++)
+			for (unsigned int i = 0; i < length; i++)
 				data[i] -= other[i];
 			return *this;
 		}
 
 		base_vector<N, T>& operator*= (const T s) {
-			for (std::size_t i = 0; i < N; i++)
+			for (unsigned int i = 0; i < length; i++)
 				data[i] *= s;
 			return *this;
 		}
 
 		base_vector<N, T>& operator/= (const T s) {
-			T f = 1.0f / s;
-			for (std::size_t i = 0; i < N; i++)
+			assert(s != static_cast<T>(0.0));
+			T f = static_cast<T>(1.0) / s;
+			for (unsigned int i = 0; i < length; i++)
 				data[i] *= f;
 			return *this;
 		}
 
 		base_vector<N, T> operator- () const {
 			base_vector<N, T> v;
-			for (std::size_t i = 0; i < N; i++)
+			for (unsigned int i = 0; i < length; i++)
 				v[i] = -data[i];
 			return v;
 		}
 
 		base_vector<N, T> operator+ (const base_vector<N, T>& w) const {
 			base_vector<N, T> v;
-			for (std::size_t i = 0; i < N; i++)
+			for (unsigned int i = 0; i < length; i++)
 				v[i] = data[i] + w[i];
 			return v;
 		}
 
 		base_vector<N, T> operator- (const base_vector<N, T>& w) const {
 			base_vector<N, T> v;
-			for (std::size_t i = 0; i < N; i++)
+			for (unsigned int i = 0; i < length; i++)
 				v[i] = data[i] - w[i];
 			return v;
 		}
 
 		base_vector<N, T> operator* (const T s) const {
 			base_vector<N, T> v;
-			for (std::size_t i = 0; i < N; i++)
+			for (unsigned int i = 0; i < length; i++)
 				v[i] = data[i] * s;
 			return v;
 		}
 
 		base_vector<N, T> operator/ (const T s) const {
-			T f = 1.0f / s;
+			assert(s != static_cast<T>(0.0));
+			T f = static_cast<T>(1.0) / s;
 			base_vector<N, T> v;
-			for (std::size_t i = 0; i < N; i++)
+			for (unsigned int i = 0; i < length; i++)
 				v[i] = data[i] * f;
 			return v;
 		}
@@ -179,7 +205,7 @@ namespace math4games
 		/* dot product */
 		T operator*(const base_vector<N, T>& v) const {
 			T dot{};
-			for (std::size_t i = 0; i < N; i++)
+			for (unsigned int i = 0; i < length; i++)
 				dot += data[i] * v[i];
 			return dot;
 		}
@@ -188,7 +214,7 @@ namespace math4games
 	template<std::size_t N, class T>
 	inline base_vector<N, T> operator* (const T s, const base_vector<N, T>& v) {
 		base_vector<N, T> w;
-		for (std::size_t i = 0; i < N; i++)
+		for (unsigned int i = 0; i < N; i++)
 			w[i] = v[i] * s;
 		return w;
 	}
