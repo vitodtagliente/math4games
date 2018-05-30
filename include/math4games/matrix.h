@@ -34,8 +34,8 @@ namespace math4games
 		// constructor with initializer list
 		base_matrix(const std::initializer_list<T>& args) {
 			unsigned int i = 0;
-			for (auto begin = args.begin(); begin != args.end() && i < N * M; ++begin) {
-				data[i] = *begin;
+			for (auto it = args.begin(); it != args.end() && i < N * M; ++it) {
+				data[i] = *it;
 				++i;
 			}
 		}
@@ -46,20 +46,42 @@ namespace math4games
 			data = other.data;
 		}
 
-		T& operator() (const unsigned int i, const unsigned int j) {
-			assert(i < columns && j < rows);
-			return data[i + j * columns];
+		// return the vector length
+		std::size_t size() const {
+			return data.size();
 		}
 
-		const T& operator() (const unsigned int i, const unsigned int j) const {
-			assert(i < columns && j < rows);
-			return data[i + j * columns];
+		// get a row
+		base_vector<M, T> row(const unsigned int j) const {
+			base_vector<M, T> result;
+			for (unsigned int i = 0; i < M; ++i) {
+				result[i] = (*this)(i, j);
+			}
+			return result;
+		}
+
+		// get a column
+		base_vector<N, T> column(const unsigned int i) const {
+			base_vector<N, T> result;
+			for (unsigned int j = 0; j < N; ++j) {
+				result[j] = (*this)(i, j);
+			}
+			return result;
+		}
+
+		// get (i,j) element
+		T& operator() (const unsigned int i, const unsigned int j) {
+			return data.at(i + j * columns);
+		}
+
+		T operator() (const unsigned int i, const unsigned int j) const {
+			return data.at(i + j * columns);
 		}
 		
 		// determinant 
 		T determinant() const
 		{
-			return determinant_algorithm(*this);
+			return math4games::determinant(*this);
 		}
 
 		// sub matrix
@@ -67,10 +89,10 @@ namespace math4games
 			assert(x < columns && y < rows);
 			base_matrix<N - 1, M - 1, T> result;
 
-			for (unsigned int j = 0, _j = 0; j < N; ++j)
+			for (unsigned int j = 0, _j = 0; j < rows; ++j)
 			{
 				if (j == y) continue;
-				for (unsigned int i = 0, _i = 0; i < M; ++i)
+				for (unsigned int i = 0, _i = 0; i < columns; ++i)
 				{
 					if (i == x) continue;
 					result(_i, _j) = (*this)(i, j);
@@ -82,10 +104,10 @@ namespace math4games
 		}
 
 		// transpose matrix
-		base_matrix<M, N, T> transpose() {
+		base_matrix<M, N, T> transpose() const {
 			base_matrix<M, N, T> MT;
-			for (unsigned int j = 0; j < N; j++) {
-				for (unsigned int i = 0; i < M; i++) {
+			for (unsigned int j = 0; j < rows; j++) {
+				for (unsigned int i = 0; i < columns; i++) {
 					MT(i, j) = (*this)(j, i);
 				}
 			}
@@ -93,7 +115,7 @@ namespace math4games
 		}
 
 		// inverse matrix
-		base_matrix<N, M, T> inverse(bool& invertible) {
+		base_matrix<N, M, T> inverse(bool& invertible) const {
 			invertible = false;
 			T d = determinant(*this);
 			if (d != static_cast<T>(0.0)) {
@@ -104,10 +126,10 @@ namespace math4games
 		}
 
 		// adjugate matrix
-		base_matrix<N, M, T> adjugate() {
+		base_matrix<N, M, T> adjugate() const {
 			base_matrix<N, M, T> result;
-			for (unsigned int j = 0; j < N; ++j) {
-				for (unsigned int i = 0; i < M; ++i) {
+			for (unsigned int j = 0; j < rows; ++j) {
+				for (unsigned int i = 0; i < columns; ++i) {
 					base_matrix<N - 1, M - 1, T> currentMinor = minor(i, j);
 					result(j, i) = static_cast<T>(std::pow(-1, i + 1))*currentMinor.determinant();
 				}
@@ -154,7 +176,8 @@ namespace math4games
 		}
 
 		base_matrix<N, M, T>& operator/= (const T s) {
-			T f = static_cast<T>(1.0f / s);
+			assert(s != static_cast<T>(0.0));
+			T f = static_cast<T>(1.0) / s;
 			return (*this) *= f;
 		}
 
@@ -187,14 +210,15 @@ namespace math4games
 		}
 
 		base_matrix<N, M, T> operator/ (const T s) const {
-			T f = static_cast<T>(1.0f / s);
+			assert(s != static_cast<T>(0.0));
+			T f = static_cast<T>(1.0) / s;
 			return (*this) * f;
 		}
 	};
 
 	// determinant algorithm
 	template<std::size_t N, std::size_t M, typename T>
-	T determinant_algorithm(const base_matrix<N, M, T>& m)
+	T determinant(const base_matrix<N, M, T>& m)
 	{
 		/* Laplace law */
 		int j = 0;
@@ -207,37 +231,37 @@ namespace math4games
 	}
 
 	template<typename T>
-	T determinant_algorithm(const base_matrix<0, 0, T>& m)
+	T determinant(const base_matrix<0, 0, T>& m)
 	{
 		return static_cast<T>(0.0);
 	}
 
 	template<typename T>
-	T determinant_algorithm(const base_matrix<1, 0, T>& m)
+	T determinant(const base_matrix<1, 0, T>& m)
 	{
 		return static_cast<T>(0.0);
 	}
 
 	template<typename T>
-	T determinant_algorithm(const base_matrix<0, 1, T>& m)
+	T determinant(const base_matrix<0, 1, T>& m)
 	{
 		return static_cast<T>(0.0);
 	}
 
 	template<typename T>
-	T determinant_algorithm(const base_matrix<1, 1, T>& m)
+	T determinant(const base_matrix<1, 1, T>& m)
 	{
 		return m(0, 0);
 	}
 
 	template<typename T>
-	T determinant_algorithm(const base_matrix<2, 2, T>& m)
+	T determinant(const base_matrix<2, 2, T>& m)
 	{
 		return m.data[0] * m.data[3] - (m.data[1] * m.data[2]);
 	}
 
 	template<typename T>
-	T determinant_algorithm(const base_matrix<3, 3, T>& m)
+	T determinant(const base_matrix<3, 3, T>& m)
 	{
 		// Sarrus law
 		return (m.data[0] * m.data[4] * m.data[8]) -
