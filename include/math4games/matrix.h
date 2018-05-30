@@ -46,6 +46,18 @@ namespace math4games
 			data = other.data;
 		}
 
+		// templated copy constructor
+		template<std::size_t K, std::size_t P>
+		base_matrix(const base_matrix<K, P, T>& other)
+		{
+			data.fill(T{});
+			for (unsigned int j = 0; j < columns && j < P; ++j) {
+				for (unsigned int i = 0; i < rows && i < K; ++i) {
+					(*this)(i, j) = other(i, j);
+				}
+			}
+		}
+
 		// return the vector length
 		std::size_t size() const {
 			return data.size();
@@ -215,6 +227,36 @@ namespace math4games
 			return (*this) * f;
 		}
 	};
+
+	// matrix x matrix operation
+	template<std::size_t N, std::size_t M, std::size_t K, typename T>
+	base_matrix<N, K, T> operator* (const base_matrix<N, M, T>& m1, const base_matrix<M, K, T>& m2) {
+		base_matrix<N, K, T> result;
+		for (unsigned int j = 0; j < N; ++j) {
+			for (unsigned int y = 0; y < K; ++y) {
+				T value{};
+				for (unsigned int i = 0; i < N; ++i) {
+					value += m1(i, j) * m2(y, i);
+				}
+				result(y, j) = value;
+			}
+		}
+		return result;
+	}
+
+	// matrix x column vector operation 
+	template<std::size_t N, std::size_t M, typename T>
+	base_vector<N, T> operator* (const base_matrix<N, M, T>& m, const base_vector<M, T>& v) {
+		base_vector<N, T> result;
+		for (unsigned int j = 0; j < N; ++j) {
+			T value{};
+			for (unsigned int i = 0; i < M; ++i) {
+				value += m(i, j) * v[i];
+			}
+			result[j] = value;
+		}
+		return result;
+	}
 
 	// determinant algorithm
 	template<std::size_t N, std::size_t M, typename T>
