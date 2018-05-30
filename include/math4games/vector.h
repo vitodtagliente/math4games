@@ -51,6 +51,7 @@ namespace math4games
 		template<std::size_t M>
 		base_vector(const base_vector<M, T>& other)
 		{
+			data.fill(T{});
 			unsigned int i = 0;
 			for (auto it = other.data.begin(); it != other.data.end() && i < length; ++it)
 			{
