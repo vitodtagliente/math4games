@@ -6,13 +6,13 @@
 	math library for games
 */
 
-#include <cmath>
+#include "vector.h"
 
 namespace math4games
 {
-	template <typename T>
-	struct base_quaternion
+	struct quaternion
 	{
-
+		vector3 v;
+		float w;
 	};
 };
