@@ -11,6 +11,7 @@ vitodomenicotagliente@gmail.com
 #include "point.h"
 #include "matrix.h"
 #include "transformation.h"
+#include "quaternion.h"
 #include "transform.h"
 #include "debug.h"
 

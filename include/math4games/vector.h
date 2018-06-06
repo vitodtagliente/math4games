@@ -231,6 +231,8 @@ namespace math4games
 		// inherits base class constructors
 		using base_vector<2, T>::base_vector;
 
+		base_vector2() :base_vector<2, T>() {}
+
 		T& x = base_vector<2, T>::data[0];
 		T& y = base_vector<2, T>::data[1];
 
@@ -255,6 +257,8 @@ namespace math4games
 	{
 		// inherits base class constructors
 		using base_vector<3, T>::base_vector;
+
+		base_vector3() :base_vector<3, T>() {}
 
 		T& x = base_vector<3, T>::data[0];
 		T& y = base_vector<3, T>::data[1];
@@ -297,6 +301,8 @@ namespace math4games
 	{
 		// inherits base class constructors
 		using base_vector<4, T>::base_vector;
+
+		base_vector4() :base_vector<4, T>() {}
 
 		T& x = base_vector<4, T>::data[0];
 		T& y = base_vector<4, T>::data[1];

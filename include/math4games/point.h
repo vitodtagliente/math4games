@@ -6,7 +6,10 @@
 	math library for games
 */
 
-#include "vector.h"
+#include <cmath>
+#include <cassert>
+#include <initializer_list>
+#include <array>
 
 namespace math4games
 {
@@ -37,13 +40,7 @@ namespace math4games
 				++i;
 			}
 		}
-
-		// copy constructor
-		base_point(const base_vector<N, T>& other)
-		{
-			data = other.data;
-		}
-
+		
 		// templated copy constructor
 		template<std::size_t M>
 		base_point(const base_point<M, T>& other)
@@ -56,21 +53,8 @@ namespace math4games
 				++i;
 			}
 		}
-
-		// constructor from vector 
-		template<std::size_t M>
-		base_point(const base_vector<M, T>& other)
-		{
-			data.fill(T{});
-			unsigned int i = 0;
-			for (auto it = other.data.begin(); it != other.data.end() && i < length; ++it)
-			{
-				data[i] = *it;
-				++i;
-			}
-		}
-
-		// return the vector length
+		
+		// return the point length
 		std::size_t size() const {
 			return length;
 		}
@@ -142,16 +126,6 @@ namespace math4games
 			base_point<N, T> v;
 			for (unsigned int i = 0; i < length; i++)
 				v[i] = data[i] - w[i];
-			return v;
-		}
-
-		base_vector<N + 1, T> vector() const {
-			base_vector<N + 1, T> v;
-			for (unsigned int i = 0; i < length; ++i)
-			{
-				v[i] = data[i];
-			}
-			v[i] = static_cast<T>(1.0);
 			return v;
 		}
 	};

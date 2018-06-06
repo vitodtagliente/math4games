@@ -10,16 +10,17 @@
 
 namespace math4games
 {
-	//const float pi = std::acos(-1.0f);
 	const float pi = 3.1415927f;
 	const float deg2rad_factor = pi / 180.0f;
 	const float rad2deg_factor = 180.0f / pi;
 
-	float deg2rad(const float theta) {
+	// degrees to radians
+	float radians(const float theta) {
 		return theta * deg2rad_factor;
 	}
 
-	float rad2deg(const float theta) {
+	// radians to degrees
+	float degrees(const float theta) {
 		return theta * rad2deg_factor;
 	}
 
