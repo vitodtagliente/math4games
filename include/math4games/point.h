@@ -34,6 +34,7 @@ namespace math4games
 
 		// construct with initialzie list
 		base_point(const std::initializer_list<T>& args) {
+			data.fill(T{});
 			unsigned int i = 0;
 			for (auto it = args.begin(); it != args.end() && i < length; ++it) {
 				data[i] = *it;

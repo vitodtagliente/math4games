@@ -105,9 +105,7 @@ namespace math4games
 		}
 
 		matrix4 matrix() const {
-			matrix4 m({
-
-				});
+			matrix4 m = matrix4::identity; // TODO
 			return m;
 		}
 	};

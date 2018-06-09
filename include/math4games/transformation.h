@@ -9,6 +9,7 @@
 #include "vector.h"
 #include "point.h"
 #include "matrix.h"
+#include "quaternion.h"
 
 namespace math4games
 {
@@ -43,31 +44,18 @@ namespace math4games
 
 	// translation operation
 	template <std::size_t N, typename T>
-	base_matrix<N, N, T> translate(const base_vector<N, T>& v) {
-		base_matrix<N, N, T> m = identity<N, T>();
-		for (unsigned int j = 0; j < N; ++j)
-			m(N - 1, j) = v[j];
-		return m;
-	}
-
-	template <std::size_t N, typename T>
-	base_matrix<N + 1, N + 1, T> translate(const base_point<N, T>& p) {
+	base_matrix<N + 1, N + 1, T> translate(const base_vector<N, T>& v) {
 		base_matrix<N + 1, N + 1, T> m = identity<N + 1, T>();
 		for (unsigned int j = 0; j < N; ++j)
-			m(N, j) = p[j];
+			m(N, j) = v[j];
+		m(N, N) = static_cast<T>(1.0);
 		return m;
 	}
 
 	template <std::size_t N, typename T>
-	void translate(base_matrix<N, N, T>& m, const base_vector<N, T>& v) {
+	void translate(base_matrix<N + 1, N + 1, T>& m, const base_vector<N, T>& v) {
 		for (unsigned int j = 0; j < N; ++j)
-			m(N - 1, j) += v[j];
-	}
-
-	template <std::size_t N, typename T>
-	void translate(base_matrix<N + 1, N + 1, T>& m,  const base_point<N, T>& p) {
-		for (unsigned int j = 0; j < N; ++j)
-			m(N, j) += p[j];
+			m(N, j) += v[j];
 	}
 
 	// rotate operation
@@ -113,32 +101,64 @@ namespace math4games
 		return m;
 	}
 
+	// 3D rotation about an arbitrary axis v by an angle theta
+	template <typename T>
+	base_matrix<4, 4, T> rotate(const base_vector<3, T>& v, const float theta) {
+		const float rad = radians(theta);
+		const float c = std::cos(rad);
+		const float s = std::sin(rad);
+		const float c1 = 1 - c;
+
+		base_matrix<4, 4, T> m({
+			std::pow(v.x,2)*c1 + c,	v.x*v.y*c1 - v.z*s,		v.x*v.normalize*c1 + v.y*s,		0,
+			v.x*v.y*c1 + v.z*s,		std::pow(v.y,2)*c1 + c, v.y*v.z*c1 - v.x*s,				0,
+			v.x*v.y*c1 - v.y*s,		v.y*v.z*c1 - v.x*s,		std::pow(v.z,2)*c1 + c,			0,
+			0,						0,						0,								1
+		});
+		return m;
+	}
+
 	// scale operation
 	template <std::size_t N, typename T>
-	base_matrix<N, N, T> scale(const base_vector<N, T>& v) {
-		base_matrix<N, N, T> m;
-		for (unsigned int i = 0; i < N; ++i)
-			m(i, i) = v[i];
-		return m;
-	}
-
-	template <std::size_t N, typename T>
-	base_matrix<N + 1, N + 1, T> scale(const base_point<N, T>& p) {
+	base_matrix<N + 1, N + 1, T> scale(const base_vector<N, T>& v) {
 		base_matrix<N + 1, N + 1, T> m;
 		for (unsigned int i = 0; i < N; ++i)
-			m(i, i) = p[i];
+			m(i, i) = v[i];
+		m(N, N) = static_cast<T>(1.0);
 		return m;
 	}
 
 	template <std::size_t N, typename T>
-	void scale(base_matrix<N, N, T>& m, const base_vector<N, T>& v) {
+	void scale(base_matrix<N + 1, N + 1, T>& m, const base_vector<N, T>& v) {
 		for (unsigned int i = 0; i < N; ++i) 
 			m(i, i) *= v[i];
 	}
 
+	// transform matrix
 	template <std::size_t N, typename T>
-	void scale(base_matrix<N + 1, N + 1, T>& m, const base_point<N, T>& p) {
-		for (unsigned int i = 0; i < N; ++i)
-			m(i, i) *= v[i];
+	base_matrix<N + 1, N + 1, T> transform(const base_vector<N, T>& position,
+		const base_vector<N, T>& rotation, const base_vector<N, T>& scale) {
+		base_matrix<N + 1, N + 1, T> m = identity<N + 1, T>();
+		// translation
+		translate(m, position);
+		// rotation
+		// TODO
+		// scaling
+		math4games::scale(m, scale);
+		return m;
+	}
+
+	template <typename T>
+	base_matrix<3, 3, T> transform(const base_vector<2, T>& position,
+		const base_vector<2, T>& rotation, const base_vector<2, T>& scale) {
+		base_matrix<3, 3, T> m = identity<3, T>();
+		// translation
+		translate(m, position);
+		// rotation
+		const float theta = degrees(std::acosf(rotation.x / rotation.magnitude()));
+		m = m * rotate_z(theta);
+		// scaling
+		math4games::scale(m, scale);
+		return m;
 	}
 }

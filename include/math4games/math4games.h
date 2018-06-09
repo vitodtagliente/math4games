@@ -12,7 +12,6 @@ vitodomenicotagliente@gmail.com
 #include "matrix.h"
 #include "transformation.h"
 #include "quaternion.h"
-#include "transform.h"
 #include "debug.h"
 
 // namespace alias
