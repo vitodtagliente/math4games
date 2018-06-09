@@ -141,6 +141,8 @@ namespace math4games
 		// inherits base class constructors
 		using base_point<2, T>::base_point;
 
+		base_point2() :base_point<2, T>() {}
+
 		T& x = base_point<2, T>::data[0];
 		T& y = base_point<2, T>::data[1];
 
@@ -148,6 +150,10 @@ namespace math4games
 		{
 			base_point<2, T>::data[0] = _x;
 			base_point<2, T>::data[1] = _y;
+		}
+
+		base_point2& operator= (const base_point2& other) {
+			base_point<2, T>::data = other.data;
 		}
 	};
 
@@ -157,6 +163,8 @@ namespace math4games
 	{
 		// inherits base class constructors
 		using base_point<3, T>::base_point;
+
+		base_point3() :base_point<3, T>() {}
 
 		T& x = base_point<3, T>::data[0];
 		T& y = base_point<3, T>::data[1];
@@ -168,47 +176,25 @@ namespace math4games
 			base_point<3, T>::data[1] = _y;
 			base_point<3, T>::data[2] = _z;
 		}
-	};
 
-	// order 4 point
-	template<typename T>
-	struct base_point4 : public base_point<4, T>
-	{
-		// inherits base class constructors
-		using base_point<4, T>::base_point;
-
-		T& x = base_point<4, T>::data[0];
-		T& y = base_point<4, T>::data[1];
-		T& z = base_point<4, T>::data[2];
-		T& w = base_point<4, T>::data[3];
-
-		base_point4(const T _x, const T _y, const T _z, const T _w)
-		{
-			base_point<4, T>::data[0] = _x;
-			base_point<4, T>::data[1] = _y;
-			base_point<4, T>::data[2] = _z;
-			base_point<4, T>::data[3] = _w;
+		base_point3& operator= (const base_point3& other) {
+			base_point<3, T>::data = other.data;
 		}
 	};
 
 	// point types
 	typedef base_point2<float> point2;
 	typedef base_point3<float> point3;
-	typedef base_point4<float> point4;
 
 	typedef point2 fpoint2;
 	typedef point3 fpoint3;
-	typedef point4 fpoint4;
 
 	typedef base_point2<double> dpoint2;
 	typedef base_point3<double> dpoint3;
-	typedef base_point4<double> dpoint4;
 	
 	typedef base_point2<int> ipoint2;
 	typedef base_point3<int> ipoint3;
-	typedef base_point4<int> ipoint4;
 
 	typedef base_point2<unsigned int> upoint2;
 	typedef base_point3<unsigned int> upoint3;
-	typedef base_point4<unsigned int> upoint4;
 };

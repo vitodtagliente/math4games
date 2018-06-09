@@ -336,6 +336,12 @@ namespace math4games
 		// inherits base class constructors
 		using base_matrix<2, 2, T>::base_matrix;
 
+		base_matrix2() :base_matrix<2, 2, T>() {}
+
+		base_matrix2& operator= (const base_matrix2& other) {
+			base_matrix<2, 2, T>::data = other.data;
+		}
+
 		static const base_matrix2<T> zero;
 		static const base_matrix2<T> identity;
 	};
@@ -349,6 +355,12 @@ namespace math4games
 	{
 		// inherits base class constructors
 		using base_matrix<3, 3, T>::base_matrix;
+
+		base_matrix3() :base_matrix<3, 3, T>() {}
+
+		base_matrix3& operator= (const base_matrix3& other) {
+			base_matrix<3, 3, T>::data = other.data;
+		}
 
 		static const base_matrix3<T> zero;
 		static const base_matrix3<T> identity;
@@ -370,6 +382,12 @@ namespace math4games
 	{
 		// inherits base class constructors
 		using base_matrix<4, 4, T>::base_matrix;
+
+		base_matrix4() :base_matrix<4, 4, T>() {}
+
+		base_matrix4& operator= (const base_matrix4& other) {
+			base_matrix<4, 4, T>::data = other.data;
+		}
 
 		static const base_matrix4<T> zero;
 		static const base_matrix4<T> identity;

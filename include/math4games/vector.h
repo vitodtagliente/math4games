@@ -120,14 +120,14 @@ namespace math4games
 			return (*this - v)* ((*this*v) / d);
 		}
 
-		/* Operators overloading */
+		// Operators overloading 
 
 		base_vector<N, T>& operator= (const base_vector<N, T>& other) {
-			/* check for self-assignment */
+			// check for self-assignment
 			if (this == &other)
 				return *this;
 
-			/* copy */
+			// copy 
 			data = other.data;
 			return *this;
 		}
@@ -203,7 +203,7 @@ namespace math4games
 			return v;
 		}
 
-		/* dot product */
+		// dot product 
 		T operator*(const base_vector<N, T>& v) const {
 			T dot{};
 			for (unsigned int i = 0; i < length; i++)
@@ -240,6 +240,10 @@ namespace math4games
 		{
 			base_vector<2, T>::data[0] = _x;
 			base_vector<2, T>::data[1] = _y;
+		}
+
+		base_vector2& operator= (const base_vector2& other) {
+			base_vector<2, T>::data = other.data;
 		}
 
 		static const base_vector2<T> zero;
@@ -284,6 +288,10 @@ namespace math4games
 			return ((*this).cross(v))*w;
 		}
 
+		base_vector3& operator= (const base_vector3& other) {
+			base_vector<3, T>::data = other.data;
+		}
+
 		static const base_vector3<T> zero;
 		static const base_vector3<T> up;
 		static const base_vector3<T> right;
@@ -314,6 +322,10 @@ namespace math4games
 			base_vector<4, T>::data[1] = _y;
 			base_vector<4, T>::data[2] = _z;
 			base_vector<4, T>::data[3] = _w;
+		}
+
+		base_vector4& operator= (const base_vector4& other) {
+			base_vector<4, T>::data = other.data;
 		}
 
 		static const base_vector4<T> zero;

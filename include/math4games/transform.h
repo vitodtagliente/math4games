@@ -23,4 +23,11 @@ namespace math4games
 		return m;
 	}
 	*/
+
+	template <std::size_t N, typename T>
+	base_matrix<N, N, T> transform(/*TODO*/) {
+		base_matrix<N, N, T> m;
+		// TODO
+		return m;
+	}
 };
