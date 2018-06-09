@@ -42,6 +42,30 @@ namespace math4games
 		return p;
 	}
 
+	// point - point operation
+	template <std::size_t N, typename T>
+	base_vector<N, T> operator- (const base_point<N, T>& p1, const base_point<N, T>& p2) {
+		base_vector<N, T> v;
+		for (unsigned int i = 0; i < N; ++i)
+			v[i] = p1[i] - p2[i];
+		return v;
+	}
+
+	// point + vector operation
+	template <std::size_t N, typename T>
+	base_point<N, T> operator+ (const base_point<N, T>& p, const base_vector<N, T>& v) {
+		base_point<N, T> new_point;
+		for (unsigned int i = 0; i < N; ++i)
+			new_point[i] = p[i] + v[i];
+		return new_point;
+	}
+
+	// point + vector operation
+	template <std::size_t N, typename T>
+	base_point<N, T> operator+ (const base_vector<N, T>& v, const base_point<N, T>& p) {
+		return p + v;
+	}
+
 	// translation operation
 	template <std::size_t N, typename T>
 	base_matrix<N + 1, N + 1, T> translate(const base_vector<N, T>& v) {

@@ -7,6 +7,8 @@
 */
 
 #include <iostream>
+#include "vector.h"
+#include "point.h"
 #include "matrix.h"
 
 namespace math4games
@@ -17,6 +19,16 @@ namespace math4games
 		os << "vector" << v.length << std::endl;
 		for (unsigned int i = 0; i < v.length; ++i)
 			cout << v[i] << " ";
+		os << std::endl;
+		return os;
+	}
+
+	template <std::size_t N, class T>
+	std::ostream& operator<<(std::ostream& os, const base_point<N, T>& p)
+	{
+		os << "point" << p.length << std::endl;
+		for (unsigned int i = 0; i < p.length; ++i)
+			cout << p[i] << " ";
 		os << std::endl;
 		return os;
 	}

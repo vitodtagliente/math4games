@@ -96,39 +96,6 @@ namespace math4games
 		bool operator!= (const base_point<N, T>& other) const {
 			return !(*this == other);
 		}
-
-		base_point<N, T>& operator+= (const base_point<N, T>& other) {
-			for (unsigned int i = 0; i < length; i++)
-				data[i] += other[i];
-			return *this;
-		}
-
-		base_point<N, T>& operator-= (const base_point<N, T>& other) {
-			for (unsigned int i = 0; i < length; i++)
-				data[i] -= other[i];
-			return *this;
-		}
-
-		base_point<N, T> operator- () const {
-			base_point<N, T> v;
-			for (unsigned int i = 0; i < length; i++)
-				v[i] = -data[i];
-			return v;
-		}
-
-		base_point<N, T> operator+ (const base_point<N, T>& w) const {
-			base_point<N, T> v;
-			for (unsigned int i = 0; i < length; i++)
-				v[i] = data[i] + w[i];
-			return v;
-		}
-
-		base_point<N, T> operator- (const base_point<N, T>& w) const {
-			base_point<N, T> v;
-			for (unsigned int i = 0; i < length; i++)
-				v[i] = data[i] - w[i];
-			return v;
-		}
 	};
 
 	// undefined order zero point
