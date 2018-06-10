@@ -24,8 +24,12 @@ namespace math4games
 		}
 
 		quaternion(const vector3& vector, const float scalar = 0.0f) {
-			v.data = vector.data;
-			w = scalar;
+			const float half_angle = 0.5f * radians(scalar);
+			const float s = std::sin(half_angle);
+			v[0] = v.x * s;
+			v[1] = v.y * s;
+			v[2] = v.z * s;
+			w = std::cos(half_angle);
 		}
 
 		quaternion(const float x, const float y, const float z, const float _w = 0.0f) {
@@ -105,8 +109,32 @@ namespace math4games
 		}
 
 		matrix4 matrix() const {
-			matrix4 m = matrix4::identity; // TODO
+			const float xy = v.x*v.y;
+			const float xz = v.x*v.z;
+			const float yz = v.y*v.z;
+			const float x2 = v.x*v.x;
+			const float y2 = v.y*v.y;
+			const float z2 = v.z*v.z;
+
+			matrix4 m({
+				1.0f-2*y2-2*z2,		2*xy+2*w*v.z,	2*xz-2*w*v.y,	0,
+				2*xy-2*w*v.z,		1-2*x2-2*z2,	2*yz+2*w*v.z,	0,
+				2*xz+2*w*v.y,		2*yz-2*w*v.x,	1-2*x2-2*y2,	0,
+				0,					0,				0,				1
+			});
 			return m;
+		}
+
+		vector4 axisAngle() const {
+			vector4 result;
+			const float angle = 2.0f * std::acos(w);
+			const float length = sqrt(1.0f - angle * angle);
+			const float f = 1.0f / length;
+			result.x *= f;
+			result.y *= f;
+			result.z *= f;
+			result.w = angle;
+			return result;
 		}
 	};
 
