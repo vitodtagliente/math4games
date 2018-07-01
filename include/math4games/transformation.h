@@ -191,7 +191,7 @@ namespace math4games
 		const float top, const float bottom, 
 		const float near_plane, const float far_plane) 
 	{
-		base_matrix<4, 4, float> m = identity<3, float>();
+		base_matrix<4, 4, float> m = identity<4, float>();
 		
 		m(0, 0) = 2.0f / (right - left);        
         m(1, 1) = 2.0f / (top - bottom);
