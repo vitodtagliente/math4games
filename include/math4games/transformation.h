@@ -185,4 +185,43 @@ namespace math4games
 		math4games::scale(m, scale);
 		return m;
 	}
+	
+	// orthograpic pojection
+	base_matrix<4, 4, float> orthographic(const float left, const float right, 
+		const float top, const float bottom, 
+		const float near_plane, const float far_plane) 
+	{
+		base_matrix<4, 4, float> m = identity<3, float>();
+		
+		m(0, 0) = 2.0f / (right - left);        
+        m(1, 1) = 2.0f / (top - bottom);
+        m(2, 2) = -2.0f / (far_plane - near_plane);
+
+        m(3, 0) = -(right + left) / (right - left);
+        m(3, 1) = -(top + bottom) / (top - bottom);
+        m(3, 2) = -(far_plane + near_plane) / (far_plane - near_plane);
+		
+		return m;
+	}
+	
+	// perspective projection
+    base_matrix<4, 4, float> perspective(const float fov, const float aspect, const float near_plane, const float far_plane)
+    {
+        base_matrix<4, 4, float> m(0.0f);
+
+        float top    = near_plane * std::tan(fov / 2.0);
+        float bottom = -top;
+        float right  =  top * aspect;
+        float left   = -top * aspect;
+
+        m(0, 0) = (2.0f * near_plane) / (right - left);
+        m(1, 1) = (2.0f * near_plane) / (top - bottom);
+        m(2, 2) = -(far_plane + near_plane) / (far_plane - near_plane); 
+		
+        m(2, 3) = -1.0f;
+        m(3, 2) = -(2.0f * near_plane*far_plane) / (far_plane - near_plane); 
+        
+
+        return m;
+    }
 }
