@@ -340,6 +340,7 @@ namespace math4games
 
 		base_matrix2& operator= (const base_matrix2& other) {
 			base_matrix<2, 2, T>::data = other.data;
+			return (*this);
 		}
 
 		static const base_matrix2<T> zero;
@@ -360,6 +361,7 @@ namespace math4games
 
 		base_matrix3& operator= (const base_matrix3& other) {
 			base_matrix<3, 3, T>::data = other.data;
+			return (*this);
 		}
 
 		static const base_matrix3<T> zero;
@@ -387,6 +389,7 @@ namespace math4games
 
 		base_matrix4& operator= (const base_matrix4& other) {
 			base_matrix<4, 4, T>::data = other.data;
+			return (*this);
 		}
 
 		static const base_matrix4<T> zero;
