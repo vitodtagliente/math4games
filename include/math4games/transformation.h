@@ -188,7 +188,7 @@ namespace math4games
 	
 	// orthograpic pojection
 	base_matrix<4, 4, float> orthographic(const float left, const float right, 
-		const float top, const float bottom, 
+		const float bottom, const float top, 
 		const float near_plane, const float far_plane) 
 	{
 		base_matrix<4, 4, float> m = identity<4, float>();
